@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+<h1 class="display-4">Your Orders</h1>
+<div>
+
+</div>
+<div style="display:flex; margin:0 20px">
+    <table class="table table-striped" style="width:700px">
+        <thead>
+            <tr>
+                <th>Food Image</th>
+                <th>Food Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><img src="{{ url_for('static',filename='ess.png') }}" class="msf-img" style="height:70px; width:70px"></td>
+                <td>Extravagant Slumber</td>
+                <td><input type="text" disabled="" value="0" class="es" style="width: 40px; text-align:center"></td>
+                <td>$ <input type="text" disabled="" value="0" class="esp" style="width: 70px"></td>
+            </tr>
+            <tr>
+                <td><img src="{{ url_for('static',filename='sd.png') }}" class="msf-img" style="height:70px; width:70px"></td>
+                <td>Sweet Dreams</td>
+                <td><input type="text" disabled="" value="0" class="sd" style="width: 40px; text-align:center"></td>
+                <td>$ <input type="text" disabled="" value="0" class="sdp" style="width: 70px"></td>
+            </tr>
+            <tr>
+                <td><img src="{{ url_for('static',filename='qe.png') }}" class="msf-img" style="height:70px; width:70px"></td>
+                <td>Quiet Elegance</td>
+                <td><input type="text" disabled="" value="0" class="qe" style="width: 40px; text-align:center"></td>
+                <td>$ <input type="text" disabled="" value="0" class="qep" style="width: 70px"></td>
+            </tr>
+            <tr>
+                <td><img src="{{ url_for('static',filename='fff.png') }}" class="msf-img" style="height:70px; width:70px"></td>
+                <td>Flash-Fried-Fillet</td>
+                <td><input type="text" disabled="" value="0" class="fff" style="width: 40px; text-align:center"></td>
+                <td>$ <input type="text" disabled="" value="0" class="fffp" style="width: 70px"></td>
+            </tr>
+            {% for order in orders_list %}
+            <tr>
+<!--                <td class="fi"></td>
+                <td class="fn"></td>
+                <td class="fq"></td>
+                <td class="fp"></td>-->
+                <td>{{ order.get_food_name() }}</td>
+                <td>{{ order.get_quantity() }}</td>
+                <td>{{ order.get_price() }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <table class="table table-striped" style="width:500px; margin-left:50px; border:3px solid black" >
+        <thead>
+            <tr>
+                <th rowspan="4" style="text-align:center"> Your Order(s)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><div class="alert alert-info">
+                    <strong>Extravagant Slumber</strong><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div></td>
+                <td>$18.50</td>
+            </tr>
+            <tr><td><div class="alert alert-info">
+                    <strong>Sweet Dream</strong><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            </div></td><td>$11.50</td></tr>
+            <tr><td><div class="alert alert-info">
+                    <strong>Quiet Elegance</strong><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            </div></td><td>$37.00</td></tr>
+            <tr><td><div class="alert alert-info">
+                    <strong>Flash-Fried-Fillet</strong><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            </div></td><td>$7.40</td></tr>
+            <tr><td>Subtotal</td><td>$----</td></tr>
+            <tr><td rowspan="2" style="align:center"><input type="submit" value="Pay" class="btn btn-primary" style="width:350px"/></td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

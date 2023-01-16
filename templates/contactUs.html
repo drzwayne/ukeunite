@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Library Loan Systems - Contact Us{% endblock %}
+
+{% block content %}
+<h1 class="display-4">Contact Us</h1>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" data-bs-toggle="tab" href="#DIT">DIT</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-bs-toggle="tab" href="#DBA">DBA</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-bs-toggle="tab" href="#DCS">DCS</a>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane container-fluid active" id="DIT">
+    <br>
+    <h2>IT1166 App Development Project</h2>
+    <br>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mr. Faris Foo</td>
+            <td>Module Leader</td>
+            <td><a href="mailto:faris_foo@nyp.edu.sg">faris_foo@nyp.edu.sg</a></td>
+          </tr>
+          <tr>
+            <td>Mr. Chan Yuen Loong</td>
+            <td>Module Tutor</td>
+            <td><a href="mailto:chan_yuen_loong@nyp.edu.sg">chan_yuen_loong@nyp.edu.sg</a></td>
+          </tr>
+          <tr>
+            <td>Ms. Tan Sew Lan</td>
+            <td>Module Tutor</td>
+            <td><a href="mailto:tan_sew_lan@myaccount.nyp.edu.sg">tan_sew_lan@myaccount.nyp.edu.sg</a></td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  <div class="tab-pane container fade" id="DBA">...</div>
+  <div class="tab-pane container fade" id="DCS">...</div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Retrieve Guests{% endblock %}
+{% block content %}
+<h1 class="display-4">Retrieve Guests</h1>
+<div>
+    {% if count == 0 %}
+    <p>There are no guests.</p>
+    {% elif count == 1 %}
+    <p>There is 1 guest.</p>
+    {% else %}
+    <p>There are {{ count }} guests.</p>
+    {% endif %}
+</div>
+<div>
+    <table class="table table-striped">
+        <tbody>
+            {% for guest in guests_list %}
+            <tr>
+                <td>Guest ID</td>
+                <td>{{ guest.get_guest_id() }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>{{ guest.get_birthday() }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Payment Method</td>
+                <td>{{ guest.get_payment_method() }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Credit Card Number</td>
+                <td>{{ guest.get_credit_number() }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Expiry Number</td>
+                <td>{{ guest.get_exp_number() }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Remarks</td>
+                <td>{{ guest.get_remarks() }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td><a href="#" class="btn btn-warning">Update</a></td>
+                <td>
+                    <form action="" method="POST">
+                        <input type="submit" value="Sign Out" class="btn btn-danger">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

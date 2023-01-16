@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Member Sign In{% endblock %}
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+<h1 class="display-4">Create Account</h1>
+<form method="POST" action="">
+    <div class="form-group">
+        {{ render_field(form.first_name, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.last_name, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.gender, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.email, class="form-control") }}
+      </div>
+  <div class="form-group">
+        {{ render_field(form.password, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.birthday, class="form-control datepicker") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.address, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.payment_method, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.credit_number, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.exp_number, class="form-control") }}
+      </div>
+      <div id="prof">
+        <div class="form-group">
+          {{ render_field(form.remarks, class="form-control") }}
+        </div>
+      </div>
+    <input type="submit" value="Submit" class="btn btn-primary"/>
+</form>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Big Deal{% endblock %}
+{% block content %}
+<div id="mds" style="display:grid;grid-template-columns:repeat(auto-fit,280px);text-align:center;grid-gap:25px;padding:15px;margin:0">
+        <div data-id="m1" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
+          <img src="{{ url_for('static',filename='ess.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
+          <h2 class="msf-name" style="font-size:27px">Extravagant Slumber</h2>
+          <h3 class="msf-p">$18.50</h3>
+          <div class="ar">
+              <button onclick="server.increment()" style="border-radius: 5px">Add to Cart</button>
+              <button onclick="server.decrement()" style="border-radius: 5px">Remove</button>
+          </div>
+        </div>
+        <div data-id="m2" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
+          <img src="{{ url_for('static',filename='sd.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
+          <h2 class="msf-name" style="font-size:30px">Sweet Dreams</h2>
+          <h3 class="msf-p">$11.50</h3>
+          <div class="ar">
+              <button onclick="server.increment()" style="border-radius: 5px">Add to Cart</button>
+              <button onclick="server.decrement()" style="border-radius: 5px">Remove</button>
+          </div>
+        </div>
+        <div data-id="m3" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
+          <img src="{{ url_for('static',filename='qe.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
+          <h2 class="msf-name" style="font-size:30px">Quiet Elegance</h2>
+          <h3 class="msf-p">$37.00</h3>
+          <div class="ar">
+              <button onclick="server.increment()" style="border-radius: 5px">Add to Cart</button>
+              <button onclick="server.decrement()" style="border-radius: 5px">Remove</button>
+          </div>
+        </div>
+        <div data-id="m4" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
+          <img src="{{ url_for('static',filename='fff.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
+          <h2 class="msf-name" style="font-size:30px">Flash-Fried-Fillet</h2>
+          <h3 class="msf-p">$7.40</h3>
+          <div class="ar">
+              <button onclick="server.increment()" style="border-radius: 5px">Add to Cart</button>
+              <button onclick="server.decrement()" style="border-radius: 5px">Remove</button>
+          </div>
+        </div>
+      </div>
+{% endblock %}

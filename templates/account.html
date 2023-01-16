@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Account{% endblock %}
+{% block content %}
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" data-bs-toggle="tab" href="#createmember">Member Sign In</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-bs-toggle="tab" href="#createguest">Guest Sign In</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane container-fluid active" id="createmember">
+    {% from "includes/_formHelper.html" import render_field %}
+    <h1 class="display-4">Sign In As Member</h1>
+    <form method="POST" action="">
+      <div class="form-group">
+        {{ render_field(form.first_name, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.last_name, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.gender, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.email, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.birthday, class="form-control datepicker") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.address, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.payment_method, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.credit_number, class="form-control") }}
+      </div>
+      <div class="form-group">
+        {{ render_field(form.exp_number, class="form-control") }}
+      </div>
+      <div id="prof">
+        <div class="form-group">
+          {{ render_field(form.remarks, class="form-control") }}
+        </div>
+      </div>
+      <input type="submit" value="Sign In" class="btn btn-primary"/>
+    </form>
+  </div>
+  <div class="tab-pane container fade" id="createguest">...</div>
+</div>
+{% endblock %}

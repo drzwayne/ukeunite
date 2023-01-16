@@ -1,11 +1,44 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from Forms import CreateUserForm, CreateGuestForm
-import shelve, User, Guest, Order
+from Forms import CreateUserForm, CreateCustomerForm
+import shelve, User, Customer, loginuser
 import jyserver.Flask as jsf
 app = Flask(__name__)
+Tes
 @app.route('/')
 def home():
-    return App.render(render_template('home.html'))
+ return App.render(render_template('home.html'))
+
+@app.route('/login', methods=['GET', 'POST'])
+
+def loginuser():
+    if request.method == 'POST':
+        logindict = {}
+        db = shelve.open('loginuser.db', 'r')
+        logindict = db['logindict']
+        db.close()
+        loginemail = logindict['loginemail']
+        loginpassword = logindict['loginpassword']
+
+
+
+        db = shelve.open('user.db', 'r')
+        users_dict = db['Users']
+        db.close()
+        users_list = []
+
+
+        for key in users_dict:
+            if key.email == loginemail and key.password == loginpassword:
+                return redirect( '/home')
+
+            else:
+                error_message = "Email or password is incorrect. Please try again."
+                return render_template('login.html', error_message=error_message)
+
+
+        return render_template('loginuser.html')
+
+
 
 @app.route('/cart')
 def cart():
@@ -21,6 +54,7 @@ class App:
     def esadd(self):
         self.escount += 1
         self.js.document.querySelector('.es').value = self.escount
+
     def esminus(self):
         if self.escount > 0:
             self.escount -= 1
@@ -45,11 +79,13 @@ class App:
         orders_dict = db['Orders']
         db.close()
         qtys_dict ={}
-        db = shelve.open('qty.db','c')
+        db = shelve.open('qty.db', 'c')
         qtys_list = []
         for key in qtys_dict:
             qty = qtys_dict.get(key)
             qtys_list.append(qty)
+        qtys_dict ={}
+        db = shelve.open('qty.db','c')
         try:
             qtys_dict = db['Qtys']
         except:
@@ -73,20 +109,6 @@ class App:
         else:
             pass
         self.js.document.querySelector('.cartQty').value = self.count
-        orders_dict = {}
-        db = shelve.open('order.db','w')
-        try:
-            orders_dict = db['Orders']
-        except:
-            print("Error in retrieving number of items from order.db.")
-        order = {'fn':'Extravagant Slumber', 'price':18.50, 'qty':0}
-        orders_dict = order
-        db['Orders'] = orders_dict
-        db.close()
-        orders_dict = {}
-        db = shelve.open('order.db', 'r')
-        orders_dict = db['Orders']
-        db.close()
         qtys_dict ={}
         db = shelve.open('qty.db','w')
         try:
@@ -116,28 +138,28 @@ def create_user():
             users_dict = db['Users']
         except:
             print("Error in retrieving Users from user.db.")
-        user = User.User(create_user_form.first_name.data, create_user_form.last_name.data, create_user_form.gender.data, create_user_form.email.data, create_user_form.birthday.data, create_user_form.address.data, create_user_form.payment_method.data, create_user_form.credit_number.data, create_user_form.exp_number.data, create_user_form.remarks.data)
+        user = User.User(create_user_form.first_name.data, create_user_form.last_name.data, create_user_form.gender.data, create_user_form.email.data, create_user_form.birthday.data, create_user_form.address.data, create_user_form.payment_method.data, create_user_form.credit_number.data, create_user_form.exp_number.data, create_user_form.remarks.data, create_user_form.password.data)
         users_dict[user.get_user_id()] = user
         db['Users'] = users_dict
         db.close()
         return redirect(url_for('retrieve_users'))
     return render_template('createUser.html', form=create_user_form)
-@app.route('/guestPayment', methods=['GET', 'POST'])
-def create_guest():
-    create_guest_form = CreateGuestForm(request.form)
-    if request.method == 'POST' and create_guest_form.validate():
-        guests_dict = {}
-        db = shelve.open('guest.db', 'c')
+@app.route('/createCustomer', methods=['GET', 'POST'])
+def create_customer():
+    create_customer_form = CreateCustomerForm(request.form)
+    if request.method == 'POST' and create_customer_form.validate():
+        customers_dict = {}
+        db = shelve.open('customer.db', 'c')
         try:
-            guests_dict = db['Guests']
+            customers_dict = db['Customers']
         except:
-            print("Error in retrieving Guests from guest.db.")
-        guest = Guest.Guest(create_guest_form.first_name.data, create_guest_form.address.data, create_guest_form.payment_method.data, create_guest_form.credit_number.data, create_guest_form.exp_number.data, create_guest_form.remarks.data)
-        guests_dict[guest.get_guest_id()] = guest
-        db['Guests'] = guests_dict
+            print("Error in retrieving Customers from customer.db.")
+        customer = Customer.Customer(create_customer_form.first_name.data,create_customer_form.last_name.data, create_customer_form.gender.data, create_customer_form.membership.data, create_customer_form.remarks.data, create_customer_form.email.data, create_customer_form.date_joined.data, create_customer_form.address.data, create_customer_form.password.data)
+        customers_dict[customer.get_user_id()] = customer
+        db['Customers'] = customers_dict
         db.close()
-        return redirect(url_for(''))
-    return render_template('guestPayment.html', form=create_guest_form)
+        return redirect(url_for('retrieve_customers'))
+    return render_template('createCustomer.html', form=create_customer_form)
 @app.route('/retrieveUsers')
 def retrieve_users():
     users_dict = {}
@@ -149,6 +171,17 @@ def retrieve_users():
         user = users_dict.get(key)
         users_list.append(user)
     return render_template('retrieveUsers.html', count=len(users_list), users_list=users_list)
+@app.route('/retrieveCustomers')
+def retrieve_customers():
+    customers_dict = {}
+    db = shelve.open('customer.db', 'r')
+    customers_dict = db['Customers']
+    db.close()
+    customers_list = []
+    for key in customers_dict:
+        customer = customers_dict.get(key)
+        customers_list.append(customer)
+    return render_template('retrieveCustomers.html', count=len(customers_list), customers_list=customers_list)
 @app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
 def update_user(id):
     update_user_form = CreateUserForm(request.form)
@@ -196,7 +229,6 @@ def delete_user(id):
     db['Users'] = users_dict
     db.close()
     return redirect(url_for('retrieve_users'))
-
 @app.route('/deleteOrder/<int:id>', methods=['POST'])
 def delete_order(id):
     orders_dict = {}
@@ -205,8 +237,5 @@ def delete_order(id):
     orders_dict.pop(id)
     db['Orders'] = orders_dict
     db.close()
-@app.route('/payment')
-def payment():
-    return App.render(render_template('Payment.html'))
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
