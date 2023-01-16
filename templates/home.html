@@ -7,8 +7,8 @@
           <h2 class="msf-name" style="font-size:27px">Extravagant Slumber</h2>
           <h3 class="msf-p">$18.50</h3>
           <div class="ar">
-              <button onclick="server.increment()" style="border-radius: 5px">Add to Cart</button>
-              <button onclick="server.decrement()" style="border-radius: 5px">Remove</button>
+              <button onclick="server.increment()" id="add1" style="border-radius: 5px">Add to Cart</button>
+              <button onclick="server.decrement()" id="remove1" style="border-radius: 5px">Remove</button>
           </div>
         </div>
         <div data-id="m2" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
@@ -16,8 +16,8 @@
           <h2 class="msf-name" style="font-size:30px">Sweet Dreams</h2>
           <h3 class="msf-p">$11.50</h3>
           <div class="ar">
-              <button onclick="server.increment()" style="border-radius: 5px">Add to Cart</button>
-              <button onclick="server.decrement()" style="border-radius: 5px">Remove</button>
+              <button onclick="server.increment()" id="add2" style="border-radius: 5px">Add to Cart</button>
+              <button onclick="server.decrement()" id="remove2" style="border-radius: 5px">Remove</button>
           </div>
         </div>
         <div data-id="m3" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
@@ -25,8 +25,8 @@
           <h2 class="msf-name" style="font-size:30px">Quiet Elegance</h2>
           <h3 class="msf-p">$37.00</h3>
           <div class="ar">
-              <button onclick="server.increment()" style="border-radius: 5px">Add to Cart</button>
-              <button onclick="server.decrement()" style="border-radius: 5px">Remove</button>
+              <button onclick="server.increment()" id="add3" style="border-radius: 5px">Add to Cart</button>
+              <button onclick="server.decrement()" id="remove3" style="border-radius: 5px">Remove</button>
           </div>
         </div>
         <div data-id="m4" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
@@ -34,9 +34,198 @@
           <h2 class="msf-name" style="font-size:30px">Flash-Fried-Fillet</h2>
           <h3 class="msf-p">$7.40</h3>
           <div class="ar">
-              <button onclick="server.increment()" style="border-radius: 5px">Add to Cart</button>
-              <button onclick="server.decrement()" style="border-radius: 5px">Remove</button>
+              <button onclick="server.increment()" id="add4" style="border-radius: 5px">Add to Cart</button>
+              <button onclick="server.decrement()" id="remove4" style="border-radius: 5px">Remove</button>
           </div>
         </div>
       </div>
+<!--
+<script type="text/javascript">
+var bag = [];
+var counter1 = parseInt(localStorage.getItem('c1'));
+var b1 = [];
+var m1 = {'fn':'Extravagant Slumber','price':18.50,'qty':0};
+function plus1() {
+  counter1 += 1;
+  document.getElementById('msfq1').value = counter1;
+  m1['qty'] = counter1;
+  if (counter1 => 0){
+    b1.pop(m1);
+  }
+  b1.push(m1);
+  bag.push(b1);
+  document.querySelector('.cartQty').value = parseInt(document.querySelector('.cartQty').value)+1;
+  store();
+  var cart = JSON.parse(localStorage.getItem('total'));
+  document.querySelector('.tp1').value = (cart['qty']*18.5).toFixed(2);
+  document.querySelector('.mtp').value = (parseFloat(document.querySelector('.mtp').value)+18.5).toFixed(2);
+
+}
+function minus1() {
+  if (counter1 > 0){
+    counter1 -= 1;
+    document.getElementById('msfq1').value = counter1;
+    m1['qty'] =counter1;
+    if (counter1 => 0){
+      b1.pop(m1);
+    }
+    bag.pop(b1);
+    document.querySelector('.cartQty').value = parseInt(document.querySelector('.cartQty').value)-1;
+    store();
+    var cart = JSON.parse(localStorage.getItem('total'));
+    document.querySelector('.tp1').value = (cart['qty']*18.5).toFixed(2);
+    document.querySelector('.mtp').value = (parseFloat(document.querySelector('.mtp').value)-18.5).toFixed(2);
+  }
+}
+document.getElementById('add1').addEventListener('click',plus1);
+document.getElementById('remove1').addEventListener('click',minus1);
+var counter2 = parseInt(localStorage.getItem('c2'));
+var b2 = [];
+var m2 = {'fn':'Sweet Dreams','price':11.50,'qty':0};
+function plus2() {
+  counter2 += 1;
+  document.getElementById('msfq2').value = counter2;
+  m2['qty'] = counter2;
+  if (counter2 => 0){
+    b2.pop(m2);
+  }
+  b2.push(m2);
+  bag.push(b2);
+  document.querySelector('.cartQty').value = parseInt(document.querySelector('.cartQty').value)+1;
+  store();
+  var cart2 = JSON.parse(localStorage.getItem('total2'));
+  document.querySelector('.tp2').value = (cart2['qty']*11.5).toFixed(2);
+  document.querySelector('.mtp').value = (parseFloat(document.querySelector('.mtp').value)+11.5).toFixed(2);
+
+}
+function minus2() {
+  if (counter2 > 0){
+    counter2 -= 1;
+    document.getElementById('msfq2').value = counter2;
+    m2['qty'] =counter2;
+    if (counter2 => 0){
+      b2.pop(m2);
+    }
+    bag.pop(b2);
+    document.querySelector('.cartQty').value = parseInt(document.querySelector('.cartQty').value)-1;
+    store();
+    var cart2 = JSON.parse(localStorage.getItem('total2'));
+    document.querySelector('.tp2').value = (cart2['qty']*11.5).toFixed(2);
+    document.querySelector('.mtp').value = (parseFloat(document.querySelector('.mtp').value)-11.5).toFixed(2);
+  }
+}
+document.getElementById('add2').addEventListener('click',plus2);
+document.getElementById('remove2').addEventListener('click',minus2);
+var counter3 = parseInt(localStorage.getItem('c3'));
+var b3 = [];
+var m3 = {'fn':'Quiet Elegance','price':37.00,'qty':0};
+function plus3() {
+  counter3 += 1;
+  document.getElementById('msfq3').value = counter3;
+  m3['qty'] = counter3;
+  if (counter3 => 0){
+    b3.pop(m3);
+  }
+  b3.push(m3);
+  bag.push(b3);
+  document.querySelector('.cartQty').value = parseInt(document.querySelector('.cartQty').value)+1;
+  store();
+  var cart3 = JSON.parse(localStorage.getItem('total3'));
+  document.querySelector('.tp3').value = (cart3['qty']*37).toFixed(2);
+  document.querySelector('.mtp').value = (parseFloat(document.querySelector('.mtp').value)+37).toFixed(2);
+
+}
+function minus3() {
+  if (counter3 > 0){
+    counter3 -= 1;
+    document.getElementById('msfq3').value = counter3;
+    m3['qty'] =counter3;
+    if (counter3 => 0){
+      b3.pop(m3);
+    }
+    bag.pop(b3);
+    document.querySelector('.cartQty').value = parseInt(document.querySelector('.cartQty').value)-1;
+    store();
+    var cart3 = JSON.parse(localStorage.getItem('total3'));
+    document.querySelector('.tp3').value = (cart3['qty']*37).toFixed(2);
+    document.querySelector('.mtp').value = (parseFloat(document.querySelector('.mtp').value)-37).toFixed(2);
+  }
+}
+document.getElementById('add3').addEventListener('click',plus3);
+document.getElementById('remove3').addEventListener('click',minus3);
+var counter4 = parseInt(localStorage.getItem('c4'));
+var b4 = [];
+var m4 = {'fn':'Flash-Fried-Fillet','price':7.40,'qty':0};
+function plus4() {
+  counter4 += 1;
+  document.getElementById('msfq4').value = counter4;
+  m4['qty'] = counter4;
+  if (counter4 => 0){
+    b4.pop(m4);
+  }
+  b4.push(m4);
+  bag.push(b4);
+  document.querySelector('.cartQty').value = parseInt(document.querySelector('.cartQty').value)+1;
+  store();
+  var cart4 = JSON.parse(localStorage.getItem('total4'));
+  document.querySelector('.tp4').value = (cart4['qty']*7.4).toFixed(2);
+  document.querySelector('.mtp').value = (parseFloat(document.querySelector('.mtp').value)+7.4).toFixed(2);
+
+}
+function minus4() {
+  if (counter4 > 0){
+    counter4 -= 1;
+    document.getElementById('msfq4').value = counter4;
+    m4['qty'] =counter4;
+    if (counter4 => 0){
+      b4.pop(m4);
+    }
+    bag.pop(b4);
+    document.querySelector('.cartQty').value = parseInt(document.querySelector('.cartQty').value)-1;
+    store();
+    var cart4 = JSON.parse(localStorage.getItem('total4'));
+    document.querySelector('.tp4').value = (cart4['qty']*7.4).toFixed(2);
+    document.querySelector('.mtp').value = (parseFloat(document.querySelector('.mtp').value)-7.4).toFixed(2);
+  }
+}
+document.getElementById('add4').addEventListener('click',plus4);
+document.getElementById('remove4').addEventListener('click',minus4);
+var total = 0;
+var total2 = 0;
+var total3 = 0;
+var total4 = 0;
+function store() {
+  localStorage.setItem('total',JSON.stringify(m1));
+  localStorage.setItem('total2',JSON.stringify(m2));
+  localStorage.setItem('total3',JSON.stringify(m3));
+  localStorage.setItem('total4',JSON.stringify(m4));
+  localStorage.setItem('c1',counter1);
+  localStorage.setItem('c2',counter2);
+  localStorage.setItem('c3',counter3);
+  localStorage.setItem('c4',counter4);
+  localStorage.setItem('cartNum',parseInt(counter1)+parseInt(counter2)+parseInt(counter3)+parseInt(counter4));
+//  localStorage.setItem('cartNum',document.querySelector('.cartQty').value);
+
+}
+function get() {
+  var cart = JSON.parse(localStorage.getItem('total'));
+  document.querySelector('.tp1').value = (cart['qty']*18.5).toFixed(2);
+  var cart2 = JSON.parse(localStorage.getItem('total2'));
+  document.querySelector('.tp2').value = (cart2['qty']*11.5).toFixed(2);
+  var cart3 = JSON.parse(localStorage.getItem('total3'));
+  document.querySelector('.tp3').value = (cart3['qty']*37).toFixed(2);
+  var cart4 = JSON.parse(localStorage.getItem('total4'));
+  document.querySelector('.tp4').value = (cart4['qty']*7.4).toFixed(2);
+  document.querySelector('.mtp').value = (parseFloat(document.querySelector('.mtp').value)+(parseFloat(cart['qty']*18.5)+parseFloat(cart2['qty']*11.5)+parseFloat(cart3['qty']*37)+parseFloat(cart4['qty']*7.4))).toFixed(2);
+  document.querySelector('.all').value = document.querySelector('.cartQty').value;
+}
+get();
+</script>
+<script type="text/javascript">
+  document.getElementById('msfq1').value = parseInt(localStorage.getItem('c1'));
+  document.getElementById('msfq2').value = parseInt(localStorage.getItem('c2'));
+  document.getElementById('msfq3').value = parseInt(localStorage.getItem('c3'));
+  document.getElementById('msfq4').value = parseInt(localStorage.getItem('c4'));
+  document.querySelector('.cartQty').value = parseInt(localStorage.getItem('cartNum'));
+  </script>-->
 {% endblock %}

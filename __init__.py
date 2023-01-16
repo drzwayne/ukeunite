@@ -1,23 +1,37 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from Forms import CreateUserForm, CreateCustomerForm
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from Forms import CreateUserForm, CreateCustomerForm, CreateLoginForm
 import shelve, User, Customer, loginuser
 import jyserver.Flask as jsf
 app = Flask(__name__)
-Tes
 @app.route('/')
 def home():
  return App.render(render_template('home.html'))
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/json')
+def get_json():
+    return jsonify('cart.html')
 
-def loginuser():
-    if request.method == 'POST':
-        logindict = {}
-        db = shelve.open('loginuser.db', 'r')
-        logindict = db['logindict']
+@app.route('/loginUser', methods=['GET', 'POST'])
+##Your old codes are in the loginUser.html##
+def login_user():
+    create_login_form = CreateLoginForm(request.form)
+    if request.method == 'POST' and create_login_form.validate():
+        login_dict = {}
+        db = shelve.open('login.db', 'c')
+        try:
+            logins_dict = db['Logins']
+        except:
+            print("Error in retrieving Users from user.db.")
+        login = loginuser.loginuser(create_login_form.loginemail.data, create_login_form.loginpassword.data)
+        logins_dict = login
+        db['Logins'] = logins_dict
         db.close()
-        loginemail = logindict['loginemail']
-        loginpassword = logindict['loginpassword']
+        login_dict = {}
+        db = shelve.open('login.db', 'r')
+        login_dict = db['Logins']
+        db.close()
+        loginemail = login_dict['loginemail']
+        loginpassword = login_dict['loginpassword']
 
 
 
@@ -25,21 +39,13 @@ def loginuser():
         users_dict = db['Users']
         db.close()
         users_list = []
-
-
         for key in users_dict:
             if key.email == loginemail and key.password == loginpassword:
-                return redirect( '/home')
-
+                return redirect('/home')
             else:
                 error_message = "Email or password is incorrect. Please try again."
-                return render_template('login.html', error_message=error_message)
-
-
-        return render_template('loginuser.html')
-
-
-
+                return redirect(url_for('login_user', error_message=error_message))
+    return render_template('loginUser.html', form=create_login_form)
 @app.route('/cart')
 def cart():
     return App.render(render_template('cart.html'))
@@ -51,9 +57,62 @@ class App:
         self.sdcount = 0
         self.qecount = 0
         self.fffcount = 0
+        self.cart = 0
+        self.total = 0
+        self.total2 = 0
+        self.total3 = 0
+        self.total4 = 0
+        self.c1 = self.escount
+        self.cart = self.total
+        escounts_dict = {}
+        db = shelve.open('escount.db','c')
+        try:
+            escounts_dict = db['Escounts']
+        except:
+            print("Error in retrieving number of items from escount.db.")
+        db['Escounts'] = escounts_dict
+        db.close()
+        escounts_dict = {}
+        db = shelve.open('escount.db', 'r')
+        escounts_dict = db['Escounts']
+        db.close()
+        escounts_list = []
+        for key in escounts_dict:
+            escount = escounts_dict.get(key)
+            escounts_list.append(escount)
+        self.b1 = []
+        self.m1 = {'fn':'ES','price':18.50, 'qty':0}
     def esadd(self):
         self.escount += 1
         self.js.document.querySelector('.es').value = self.escount
+        self.m1['qty'] = self.escount
+        if self.escount >= 0:
+            self.b1.pop(self.m1)
+        self.b1.push(self.m1)
+        self.js.document.querySelector('.cartQty').value= self.js.document.querySelector('.cartQty').value + 1
+        ts_dict = {}
+        db = shelve.open('t.db','c')
+        try:
+            ts_dict = db['Ts']
+        except:
+            print("Error in retrieving number of items from t.db.")
+        ts_dict = self.total[self.m1]
+        db['Ts'] = ts_dict
+        db.close()
+        self.js.document.querySelector('.tp1').value = (self.cart['qty']*18.5).toFixed(2)
+        self.js.document.querySelector('.mtp').value = (self.js.document.querySelector('.mtp').value+18.5).toFixed(2)
+    def get(self):
+        self.cart = self.total
+        ts_dict = {}
+        db = shelve.open('t.db', 'r')
+        ts_dict = db['Ts']
+        db.close()
+        ts_list = []
+        for key in ts_dict:
+            t = ts_dict.get(key)
+            ts_list.append(t)
+        self.js.document.querySelector('.tp1').value= (self.cart['qty']*18.5).toFixed(2)
+        self.js.document.querySelector('.mtp').value= (self.js.document.querySelector('.mtp').value+self.cart['qty']*18.5).toFixed(2)
 
     def esminus(self):
         if self.escount > 0:

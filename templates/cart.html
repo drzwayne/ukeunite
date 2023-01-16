@@ -20,26 +20,26 @@
             <tr>
                 <td><img src="{{ url_for('static',filename='ess.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Extravagant Slumber</td>
-                <td><input type="text" disabled="" value="0" class="es" style="width: 40px; text-align:center"></td>
-                <td>$ <input type="text" disabled="" value="0" class="esp" style="width: 70px"></td>
+                <td><input type="text" disabled="" value="0" id="msfq1" class="es" style="width: 40px; text-align:center"></td>
+                <td>$ <input type="text" disabled="" value="0" id="tp1" class="esp" style="width: 70px"></td>
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='sd.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Sweet Dreams</td>
-                <td><input type="text" disabled="" value="0" class="sd" style="width: 40px; text-align:center"></td>
-                <td>$ <input type="text" disabled="" value="0" class="sdp" style="width: 70px"></td>
+                <td><input type="text" disabled="" value="0" id="msfq2" class="sd" style="width: 40px; text-align:center"></td>
+                <td>$ <input type="text" disabled="" value="0" id="tp2" class="sdp" style="width: 70px"></td>
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='qe.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Quiet Elegance</td>
-                <td><input type="text" disabled="" value="0" class="qe" style="width: 40px; text-align:center"></td>
-                <td>$ <input type="text" disabled="" value="0" class="qep" style="width: 70px"></td>
+                <td><input type="text" disabled="" value="0" id="msfq3" class="qe" style="width: 40px; text-align:center"></td>
+                <td>$ <input type="text" disabled="" value="0" id="tp3" class="qep" style="width: 70px"></td>
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='fff.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Flash-Fried-Fillet</td>
-                <td><input type="text" disabled="" value="0" class="fff" style="width: 40px; text-align:center"></td>
-                <td>$ <input type="text" disabled="" value="0" class="fffp" style="width: 70px"></td>
+                <td><input type="text" disabled="" value="0" id="msfq4" class="fff" style="width: 40px; text-align:center"></td>
+                <td>$ <input type="text" disabled="" value="0" id="tp4" class="fffp" style="width: 70px"></td>
             </tr>
             {% for order in orders_list %}
             <tr>
@@ -76,7 +76,7 @@
             <tr><td><div class="alert alert-info">
                     <strong>Flash-Fried-Fillet</strong><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
             </div></td><td>$7.40</td></tr>
-            <tr><td>Subtotal</td><td>$----</td></tr>
+            <tr><td>Subtotal</td><td>$ <input type="text" disabled="" value="0" id="mtp" class="fffp" style="width: 70px"></td></tr>
             <tr><td rowspan="2" style="align:center"><input type="submit" value="Pay" class="btn btn-primary" style="width:350px"/></td></tr>
         </tbody>
     </table>
