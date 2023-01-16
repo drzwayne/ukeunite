@@ -1,23 +1,33 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from Forms import CreateUserForm, CreateCustomerForm
+from Forms import CreateUserForm, CreateCustomerForm, CreateLoginForm
 import shelve, User, Customer, loginuser
 import jyserver.Flask as jsf
 app = Flask(__name__)
-Tes
 @app.route('/')
 def home():
  return App.render(render_template('home.html'))
 
-@app.route('/login', methods=['GET', 'POST'])
-
-def loginuser():
-    if request.method == 'POST':
-        logindict = {}
-        db = shelve.open('loginuser.db', 'r')
-        logindict = db['logindict']
+@app.route('/loginUser', methods=['GET', 'POST'])
+##Your old codes are in the loginUser.html##
+def login_user():
+    create_login_form = CreateLoginForm(request.form)
+    if request.method == 'POST' and create_login_form.validate():
+        login_dict = {}
+        db = shelve.open('login.db', 'c')
+        try:
+            logins_dict = db['Logins']
+        except:
+            print("Error in retrieving Users from user.db.")
+        login = loginuser.loginuser(create_login_form.loginemail.data, create_login_form.loginpassword.data)
+        logins_dict = login
+        db['Logins'] = logins_dict
         db.close()
-        loginemail = logindict['loginemail']
-        loginpassword = logindict['loginpassword']
+        login_dict = {}
+        db = shelve.open('login.db', 'r')
+        login_dict = db['Logins']
+        db.close()
+        loginemail = login_dict['loginemail']
+        loginpassword = login_dict['loginpassword']
 
 
 
@@ -25,21 +35,13 @@ def loginuser():
         users_dict = db['Users']
         db.close()
         users_list = []
-
-
         for key in users_dict:
             if key.email == loginemail and key.password == loginpassword:
-                return redirect( '/home')
-
+                return redirect('/home')
             else:
                 error_message = "Email or password is incorrect. Please try again."
-                return render_template('login.html', error_message=error_message)
-
-
-        return render_template('loginuser.html')
-
-
-
+                return redirect(url_for('login_user', error_message=error_message))
+    return render_template('loginUser.html', form=create_login_form)
 @app.route('/cart')
 def cart():
     return App.render(render_template('cart.html'))
