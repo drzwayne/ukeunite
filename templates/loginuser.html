@@ -1,5 +1,40 @@
 {% extends "base.html" %}
 {% block title %}Login Account{% endblock %}
 {% block content %}
-
+{% from "includes/_formHelper.html" import render_field %}
+<h1 class="display-4">Login</h1>
+<form method="POST" action="">
+      <div class="form-group">
+        {{ render_field(form.email, class="form-control") }}
+      </div>
+    <div class="form-group">
+        {{ render_field(form.password, class="form-control") }}
+      </div>
+    <input type="submit" value="Submit" class="btn btn-primary"/>
+</form>
 {% endblock %}
+<!-- logindict = {}
+        db = shelve.open('loginuser.db', 'r')
+        logindict = db['logindict']
+        db.close()
+        loginemail = logindict['loginemail']
+        loginpassword = logindict['loginpassword']
+
+
+
+        db = shelve.open('user.db', 'r')
+        users_dict = db['Users']
+        db.close()
+        users_list = []
+
+
+        for key in users_dict:
+            if key.email == loginemail and key.password == loginpassword:
+                return redirect('/home')
+
+            else:
+                error_message = "Email or password is incorrect. Please try again."
+                return render_template('loginuser.html', error_message=error_message)
+
+
+    return render_template('loginuser.html', form=create_login_form)-->
