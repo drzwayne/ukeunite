@@ -1,37 +1,58 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session,g
+<<<<<<<<< Temporary merge branch 1
+from flask import Flask, render_template, request, redirect, url_for, flash
+=========
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+>>>>>>>>> Temporary merge branch 2
 from Forms import CreateUserForm, CreateCustomerForm, CreateLoginForm
-import shelve, User, Customer, log
+import shelve, User, Customer, loginuser
 import jyserver.Flask as jsf
 app = Flask(__name__)
-app.secret_key = 'kim gim yeung'
 @app.route('/')
 def home():
  return App.render(render_template('home.html'))
 
+<<<<<<<<< Temporary merge branch 1
+=========
 @app.route('/json')
 def get_json():
     return jsonify('cart.html')
 
+>>>>>>>>> Temporary merge branch 2
 @app.route('/loginUser', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        session.pop('user', None)
-        if request.form['password'] == 'password':
-            session['user'] = request.form['username']
-            return redirect(url_for('retrieve_guest'))
-    return render_template('loginUser.html')
-@app.route('/retrieveGuest', methods=['GET','POST'])
-def logged():
-    if g.user:
-        return render_template('retrieveGuest.html',user=session['user'])
-    return redirect(url_for('retrieve_users'))
+##Your old codes are in the loginUser.html##
+def login_user():
+    create_login_form = CreateLoginForm(request.form)
+    if request.method == 'POST' and create_login_form.validate():
+        login_dict = {}
+        db = shelve.open('login.db', 'c')
+        try:
+            logins_dict = db['Logins']
+        except:
+            print("Error in retrieving Users from user.db.")
+        login = loginuser.loginuser(create_login_form.loginemail.data, create_login_form.loginpassword.data)
+        logins_dict = login
+        db['Logins'] = logins_dict
+        db.close()
+        login_dict = {}
+        db = shelve.open('login.db', 'r')
+        login_dict = db['Logins']
+        db.close()
+        loginemail = login_dict['loginemail']
+        loginpassword = login_dict['loginpassword']
 
-@app.before_request
-def bfr_rq():
-    g.user = None
-    if 'user' in session:
-        g.user = session['user']
 
+
+        db = shelve.open('user.db', 'r')
+        users_dict = db['Users']
+        db.close()
+        users_list = []
+        for key in users_dict:
+            if key.email == loginemail and key.password == loginpassword:
+                return redirect('/home')
+            else:
+                error_message = "Email or password is incorrect. Please try again."
+                return redirect(url_for('login_user', error_message=error_message))
+    return render_template('loginUser.html', form=create_login_form)
 @app.route('/cart')
 def cart():
     return App.render(render_template('cart.html'))
@@ -183,12 +204,28 @@ def create_user():
             users_dict = db['Users']
         except:
             print("Error in retrieving Users from user.db.")
-        user = User.User(create_user_form.first_name.data, create_user_form.last_name.data, create_user_form.gender.data, create_user_form.email.data, create_user_form.birthday.data, create_user_form.address.data, create_user_form.payment_method.data, create_user_form.credit_number.data,create_user_form.cvc.data, create_user_form.exp_number.data, create_user_form.remarks.data, create_user_form.password.data)
+        user = User.User(create_user_form.first_name.data, create_user_form.last_name.data, create_user_form.gender.data, create_user_form.email.data, create_user_form.birthday.data, create_user_form.address.data, create_user_form.payment_method.data, create_user_form.credit_number.data, create_user_form.exp_number.data, create_user_form.remarks.data, create_user_form.password.data)
         users_dict[user.get_user_id()] = user
         db['Users'] = users_dict
         db.close()
         return redirect(url_for('retrieve_users'))
     return render_template('createUser.html', form=create_user_form)
+@app.route('/createCustomer', methods=['GET', 'POST'])
+def create_customer():
+    create_customer_form = CreateCustomerForm(request.form)
+    if request.method == 'POST' and create_customer_form.validate():
+        customers_dict = {}
+        db = shelve.open('customer.db', 'c')
+        try:
+            customers_dict = db['Customers']
+        except:
+            print("Error in retrieving Customers from customer.db.")
+        customer = Customer.Customer(create_customer_form.first_name.data,create_customer_form.last_name.data, create_customer_form.gender.data, create_customer_form.membership.data, create_customer_form.remarks.data, create_customer_form.email.data, create_customer_form.date_joined.data, create_customer_form.address.data, create_customer_form.password.data)
+        customers_dict[customer.get_user_id()] = customer
+        db['Customers'] = customers_dict
+        db.close()
+        return redirect(url_for('retrieve_customers'))
+    return render_template('createCustomer.html', form=create_customer_form)
 @app.route('/retrieveUsers')
 def retrieve_users():
     users_dict = {}
@@ -200,6 +237,17 @@ def retrieve_users():
         user = users_dict.get(key)
         users_list.append(user)
     return render_template('retrieveUsers.html', count=len(users_list), users_list=users_list)
+@app.route('/retrieveCustomers')
+def retrieve_customers():
+    customers_dict = {}
+    db = shelve.open('customer.db', 'r')
+    customers_dict = db['Customers']
+    db.close()
+    customers_list = []
+    for key in customers_dict:
+        customer = customers_dict.get(key)
+        customers_list.append(customer)
+    return render_template('retrieveCustomers.html', count=len(customers_list), customers_list=customers_list)
 @app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
 def update_user(id):
     update_user_form = CreateUserForm(request.form)
@@ -216,7 +264,6 @@ def update_user(id):
         user.set_address(update_user_form.address.data)
         user.set_payment_method(update_user_form.payment_method.data)
         user.set_credit_number(update_user_form.credit_number.data)
-        user.set_cvc(update_user_form.cvc.data)
         user.set_exp_number(update_user_form.exp_number.data)
         user.set_remarks(update_user_form.remarks.data)
         db['Users'] = users_dict
@@ -236,7 +283,6 @@ def update_user(id):
         update_user_form.address.data = user.get_address()
         update_user_form.payment_method.data = user.get_payment_method()
         update_user_form.credit_number.data = user.get_credit_number()
-        update_user_form.cvc.data = user.get_cvc()
         update_user_form.exp_number.data = user.get_exp_number()
         update_user_form.remarks.data = user.get_remarks()
         return render_template('updateUser.html', form=update_user_form)
