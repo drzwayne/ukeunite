@@ -1,51 +1,35 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session,g
 from Forms import CreateUserForm, CreateCustomerForm, CreateLoginForm
-import shelve, User, Customer, loginuser
+import shelve, User, Customer, log
 import jyserver.Flask as jsf
 app = Flask(__name__)
+app.secret_key = 'yippee'
 @app.route('/')
 def home():
  return App.render(render_template('home.html'))
-
 @app.route('/json')
 def get_json():
     return jsonify('cart.html')
-
 @app.route('/loginUser', methods=['GET', 'POST'])
-##Your old codes are in the loginUser.html##
-def login_user():
-    create_login_form = CreateLoginForm(request.form)
-    if request.method == 'POST' and create_login_form.validate():
-        login_dict = {}
-        db = shelve.open('login.db', 'c')
-        try:
-            logins_dict = db['Logins']
-        except:
-            print("Error in retrieving Users from user.db.")
-        login = loginuser.loginuser(create_login_form.loginemail.data, create_login_form.loginpassword.data)
-        logins_dict = login
-        db['Logins'] = logins_dict
-        db.close()
-        login_dict = {}
-        db = shelve.open('login.db', 'r')
-        login_dict = db['Logins']
-        db.close()
-        loginemail = login_dict['loginemail']
-        loginpassword = login_dict['loginpassword']
+def login():
+    if request.method == 'POST':
+        session.pop('user', None)
+        if request.form['password'] == 'password':
+            session['user'] = request.form['username']
+            return redirect(url_for('retrieve_guest'))
+    return render_template('loginUser.html')
+@app.route('/retrieveGuest', methods=['GET','POST'])
+def logged():
+    if g.user:
+        return render_template('retrieveGuest.html', user=session['user'])
+    return redirect(url_for('retrieve_users'))
 
+@app.before_request
+def bfr_rq():
+    g.user = None
+    if 'user' in session:
+        g.user = session['user']
 
-
-        db = shelve.open('user.db', 'r')
-        users_dict = db['Users']
-        db.close()
-        users_list = []
-        for key in users_dict:
-            if key.email == loginemail and key.password == loginpassword:
-                return redirect('/home')
-            else:
-                error_message = "Email or password is incorrect. Please try again."
-                return redirect(url_for('login_user', error_message=error_message))
-    return render_template('loginUser.html', form=create_login_form)
 @app.route('/cart')
 def cart():
     return App.render(render_template('cart.html'))

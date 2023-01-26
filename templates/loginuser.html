@@ -2,7 +2,53 @@
 {% block title %}Login Account{% endblock %}
 {% block content %}
 {% from "includes/_formHelper.html" import render_field %}
-<h1 class="display-4">Login</h1>
+<div style="display:inline-flex; margin-top:50px;">
+    <div style="display:block"><h1 class="display-4" style="margin-left:180px">Login</h1>
+    <form method="POST" action="/retrieveGuest" style="margin-left:180px">
+        <label>Email Address: <br>    <input type="email" name="username" required ></label> <br>
+        <label>Password: <br>    <input type="password" name="password" required ></label> <br>
+        <input style="margin-top:20px; width:236.67px" type="submit" value="Submit"class="btn btn-primary"/>
+    </form></div>
+<img style="margin-left:10px;width:700px; height:350px; border-radius:4px" src="{{ url_for('static',filename='bd.png') }}"></div>
+{% endblock %}
+<!--
+
+##Your old codes are in the loginUser.html##
+def login_user():
+    create_login_form = CreateLoginForm(request.form)
+    if request.method == 'POST' and create_login_form.validate():
+        login_dict = {}
+        db = shelve.open('login.db', 'c')
+        try:
+            logins_dict = db['Logins']
+        except:
+            print("Error in retrieving Users from user.db.")
+        login = loginuser.loginuser(create_login_form.loginemail.data, create_login_form.loginpassword.data)
+        logins_dict = login
+        db['Logins'] = logins_dict
+        db.close()
+        login_dict = {}
+        db = shelve.open('login.db', 'r')
+        login_dict = db['Logins']
+        db.close()
+        loginemail = login_dict['loginemail']
+        loginpassword = login_dict['loginpassword']
+
+
+
+        db = shelve.open('user.db', 'r')
+        users_dict = db['Users']
+        db.close()
+        users_list = []
+        for key in users_dict:
+            if key.email == loginemail and key.password == loginpassword:
+                return redirect('/home')
+            else:
+                error_message = "Email or password is incorrect. Please try again."
+                return redirect(url_for('login_user', error_message=error_message))
+    return render_template('loginUser.html', form=create_login_form)
+ -->
+<!--
 <form method="POST" action="">
       <div class="form-group">
         {{ render_field(form.email, class="form-control") }}
@@ -12,8 +58,10 @@
       </div>
     <input type="submit" value="Submit" class="btn btn-primary"/>
 </form>
-{% endblock %}
-<!-- logindict = {}
+
+
+
+logindict = {}
         db = shelve.open('loginuser.db', 'r')
         logindict = db['logindict']
         db.close()

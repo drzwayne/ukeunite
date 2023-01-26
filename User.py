@@ -1,6 +1,6 @@
 class User:
     count_id = 0
-    def __init__(self, first_name, last_name, gender, email, birthday, address, payment_method, credit_number, exp_number, remarks, password):
+    def __init__(self, first_name, last_name, gender, email, birthday, address, payment_method, credit_number, cvc, exp_number, remarks, password):
         User.count_id += 1
         self.__user_id = User.count_id
         self.__first_name = first_name
@@ -11,6 +11,7 @@ class User:
         self.__address =address
         self.__payment_method = payment_method
         self.__credit_number = credit_number
+        self.__cvc = cvc
         self.__exp_number = exp_number
         self.__remarks = remarks
         self.__password = password
@@ -32,6 +33,8 @@ class User:
         return self.__payment_method
     def get_credit_number(self):
         return self.__credit_number
+    def get_cvc(self):
+        return self.__cvc
     def get_exp_number(self):
         return self.__exp_number
     def get_remarks(self):
@@ -57,6 +60,8 @@ class User:
         self.__payment_method = payment_method
     def set_credit_number(self, credit_number):
         self.__credit_number = credit_number
+    def get_cvc(self, cvc):
+        self.__cvc = cvc
     def set_exp_number(self, exp_number):
         self.__exp_number = exp_number
     def set_remarks(self, remarks):
