@@ -1,12 +1,13 @@
 class User:
     count_id = 0
-    def __init__(self, first_name, last_name, gender, email, birthday, address, payment_method, credit_number, cvc, exp_number, remarks, password):
+    def __init__(self, first_name, last_name, gender, email, password, birthday, address, payment_method, credit_number, cvc, exp_number, remarks):
         User.count_id += 1
         self.__user_id = User.count_id
         self.__first_name = first_name
         self.__last_name = last_name
         self.__gender = gender
         self.__email = email
+        self.__password = password
         self.__birthday = birthday
         self.__address =address
         self.__payment_method = payment_method
@@ -14,7 +15,7 @@ class User:
         self.__cvc = cvc
         self.__exp_number = exp_number
         self.__remarks = remarks
-        self.__password = password
+
     def get_user_id(self):
         return self.__user_id
     def get_first_name(self):
@@ -25,6 +26,8 @@ class User:
         return self.__gender
     def get_email(self):
         return self.__email
+    def get_password(self):
+        return self.__password
     def get_birthday(self):
         return self.__birthday
     def get_address(self):
@@ -39,8 +42,7 @@ class User:
         return self.__exp_number
     def get_remarks(self):
         return self.__remarks
-    def get_password(self):
-        return self.__password
+
 
     def set_user_id(self, user_id):
         self.__user_id = user_id
@@ -52,6 +54,8 @@ class User:
         self.__gender = gender
     def set_email(self, email):
         self.__email = email
+    def set_remarks(self, password):
+        self.__remarks = password
     def set_birthday(self, birthday):
         self.__birthday = birthday
     def set_address(self, address):
@@ -66,6 +70,5 @@ class User:
         self.__exp_number = exp_number
     def set_remarks(self, remarks):
         self.__remarks = remarks
-    def set_remarks(self, password):
-        self.__remarks = password
+
 
