@@ -8,7 +8,7 @@ class CreateUserForm(Form):
     birthday = DateField('Birthday', format='%Y-%m-%d')
     address = TextAreaField('Delivery Address', [validators.Length(max=200), validators.DataRequired()])
     payment_method = SelectField('Payment Method', [validators.DataRequired()],choices=[('', 'Select'), ('V', 'Visa'), ('MC', 'Mastercard')], default='')
-    credit_number = TelField('Credit Card Number', [validators.Length(min=12, max=12), validators.DataRequired()])
+    credit_number = StringField('Credit Card Number', [validators.Regexp('^[0-9]*$', message='only numbers are allowed'), validators.Length(min=12, max=12), validators.DataRequired()])
     cvc = TelField('CVC', [validators.Length(min=3, max=3), validators.DataRequired()])
     exp_number = TelField('Expiry', [validators.Length(min=4, max=4), validators.DataRequired()])
     remarks = TextAreaField('Remarks', [validators.Optional()])
