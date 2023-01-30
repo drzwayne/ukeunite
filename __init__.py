@@ -20,25 +20,29 @@ def login():
     error_message = ""
 
     if request.method == 'POST':
-        db = shelve.open('user.db')
-        user_data = db['user']
+        users_dict = {}
+        db = shelve.open('user.db', 'r')
+        users_dict = db['Users']
         db.close()
+
         email = request.form['email']
         password = request.form['password']
-        if email in user_data:
-            print("Email accepted")
+        for key in users_dict:
+            user = users_dict[key]
+            if email == user.get_email():
 
-            if password == user_data[email][password]:
+                if password == user.get_password():
 
-                print("Password accepted")
 
-                session['user'] = email
+                    flash("Password accepted")
 
-                return render_template(url_for('home'))
+                    session['user'] = email
+
+                    return render_template('home.html')
+                else:
+                    error_message = "Incorrect password"
             else:
-                error_message = "Incorrect password"
-        else:
-            error_message = "Invalid email"
+                error_message = "Invalid email"
     return render_template('loginuser.html', error_message=error_message)
 
 

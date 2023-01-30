@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Login Account{% endblock %}
 {% block content %}
-{% from "includes/_formHelper.html" import render_field %}
 {% if error_message %}
   <div class="error-message">{{ error_message }}</div>
 {% endif %}
 <div style="display:inline-flex; margin-top:50px;">
     <div style="display:block"><h1 class="display-4" style="margin-left:180px">Login</h1>
-    <form method="POST" action="/retrieveGuest" style="margin-left:180px">
-        <label>Email Address: <br>    <input type="email" name="username" required ></label> <br>
+    <form method="POST" action="/loginUser" style="margin-left:180px">
+        <label>Email Address: <br>    <input type="email" name="email" required ></label> <br>
         <label>Password: <br>    <input type="password" name="password" required ></label> <br>
-        <input style="margin-top:20px; width:236.67px" type="submit" value="Submit"class="btn btn-primary"/>
+        <input style="margin-top:20px; width:236.67px" type="submit" value="Submit" class="btn btn-primary"/>
     </form></div>
 <img style="margin-left:10px;width:700px; height:350px; border-radius:4px" src="{{ url_for('static',filename='bd.png') }}"></div>
 {% endblock %}
+
 <!--
 
 ##Your old codes are in the loginUser.html##
