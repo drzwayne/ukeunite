@@ -8,10 +8,16 @@ app.secret_key = 'yippee'
 @app.route('/')
 
 def home():
-     if 'user' in session:
-        return App.render(render_template("home.html", username=session['user']))
-     else:
-         return App.render(render_template('home.html'))
+    try:
+        current_user_db = shelve.open("currentuser.db", "r")
+        current_user = current_user_db["user"]
+        current_user_db.close()
+        return render_template('home.html', current_user=current_user)
+    except:
+        current_user_db = shelve.open("currentuser.db", "c")
+        current_user_db.close()
+
+    return render_template('home.html')
 @app.route('/json')
 def get_json():
     return jsonify('cart.html')
@@ -37,6 +43,11 @@ def login():
                     flash("Password accepted")
 
                     session['user'] = email
+                    current_user_db = shelve.open("currentuser.db", "c")
+                    current_user_db["user"] = user
+                    current_user_db.close()
+
+
 
                     return render_template('home.html')
                 else:
@@ -216,22 +227,7 @@ def create_user():
         db.close()
         return redirect(url_for('retrieve_users'))
     return render_template('createUser.html', form=create_user_form)
-@app.route('/createCustomer', methods=['GET', 'POST'])
-def create_customer():
-    create_customer_form = CreateCustomerForm(request.form)
-    if request.method == 'POST' and create_customer_form.validate():
-        customers_dict = {}
-        db = shelve.open('customer.db', 'c')
-        try:
-            customers_dict = db['Customers']
-        except:
-            print("Error in retrieving Customers from customer.db.")
-        customer = Customer.Customer(create_customer_form.first_name.data,create_customer_form.last_name.data, create_customer_form.gender.data, create_customer_form.membership.data, create_customer_form.remarks.data, create_customer_form.email.data, create_customer_form.date_joined.data, create_customer_form.address.data, create_customer_form.password.data)
-        customers_dict[customer.get_user_id()] = customer
-        db['Customers'] = customers_dict
-        db.close()
-        return redirect(url_for('retrieve_customers'))
-    return render_template('createCustomer.html', form=create_customer_form)
+
 @app.route('/retrieveUsers')
 def retrieve_users():
     users_dict = {}
@@ -243,17 +239,7 @@ def retrieve_users():
         user = users_dict.get(key)
         users_list.append(user)
     return render_template('retrieveUsers.html', count=len(users_list), users_list=users_list)
-@app.route('/retrieveCustomers')
-def retrieve_customers():
-    customers_dict = {}
-    db = shelve.open('customer.db', 'r')
-    customers_dict = db['Customers']
-    db.close()
-    customers_list = []
-    for key in customers_dict:
-        customer = customers_dict.get(key)
-        customers_list.append(customer)
-    return render_template('retrieveCustomers.html', count=len(customers_list), customers_list=customers_list)
+
 @app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
 def update_user(id):
     update_user_form = CreateUserForm(request.form)
