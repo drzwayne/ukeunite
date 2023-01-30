@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session,g
-from Forms import CreateUserForm, CreateCustomerForm, CreateLoginForm
-import shelve, User, Customer, log
+from Forms import CreateUserForm, CreateCustomerForm
+import shelve, User, Customer, log, Cart
 import jyserver.Flask as jsf
 import ctypes
 app = Flask(__name__)
 app.secret_key = 'yippee'
-@app.route('/')
 
+
+@app.route('/')
 def home():
     try:
         current_user_db = shelve.open("currentuser.db", "r")
@@ -18,9 +19,8 @@ def home():
         current_user_db.close()
 
     return render_template('home.html')
-@app.route('/json')
-def get_json():
-    return jsonify('cart.html')
+
+
 @app.route('/loginUser', methods=['GET', 'POST'])
 def login():
     error_message = ""
@@ -72,145 +72,39 @@ def bfr_rq():
 
 @app.route('/cart')
 def cart():
-    return App.render(render_template('cart.html'))
+    carts_dict = {}
+    db = shelve.open('cart.db', 'r')
+    carts_dict = db['Carts']
+    db.close()
+    carts_list = []
+    for key in carts_dict:
+        cart = carts_dict.get(key)
+        carts_list.append(cart)
+    return render_template('cart.html', count=len(carts_list), carts_list=carts_list)
 @jsf.use(app)
 class App:
     def __init__(self):
         self.count = 0
-        self.escount = 0
-        self.sdcount = 0
-        self.qecount = 0
-        self.fffcount = 0
-        self.cart = 0
-        self.total = 0
-        self.total2 = 0
-        self.total3 = 0
-        self.total4 = 0
-        self.c1 = self.escount
-        self.cart = self.total
-        escounts_dict = {}
-        db = shelve.open('escount.db','c')
-        try:
-            escounts_dict = db['Escounts']
-        except:
-            print("Error in retrieving number of items from escount.db.")
-        db['Escounts'] = escounts_dict
-        db.close()
-        escounts_dict = {}
-        db = shelve.open('escount.db', 'r')
-        escounts_dict = db['Escounts']
-        db.close()
-        escounts_list = []
-        for key in escounts_dict:
-            escount = escounts_dict.get(key)
-            escounts_list.append(escount)
-        self.b1 = []
-        self.m1 = {'fn':'ES','price':18.50, 'qty':0}
-    def esadd(self):
-        self.escount += 1
-        self.js.document.querySelector('.es').value = self.escount
-        self.m1['qty'] = self.escount
-        if self.escount >= 0:
-            self.b1.pop(self.m1)
-        self.b1.push(self.m1)
-        self.js.document.querySelector('.cartQty').value= self.js.document.querySelector('.cartQty').value + 1
-        ts_dict = {}
-        db = shelve.open('t.db','c')
-        try:
-            ts_dict = db['Ts']
-        except:
-            print("Error in retrieving number of items from t.db.")
-        ts_dict = self.total[self.m1]
-        db['Ts'] = ts_dict
-        db.close()
-        self.js.document.querySelector('.tp1').value = (self.cart['qty']*18.5).toFixed(2)
-        self.js.document.querySelector('.mtp').value = (self.js.document.querySelector('.mtp').value+18.5).toFixed(2)
-    def get(self):
-        self.cart = self.total
-        ts_dict = {}
-        db = shelve.open('t.db', 'r')
-        ts_dict = db['Ts']
-        db.close()
-        ts_list = []
-        for key in ts_dict:
-            t = ts_dict.get(key)
-            ts_list.append(t)
-        self.js.document.querySelector('.tp1').value= (self.cart['qty']*18.5).toFixed(2)
-        self.js.document.querySelector('.mtp').value= (self.js.document.querySelector('.mtp').value+self.cart['qty']*18.5).toFixed(2)
-
-    def esminus(self):
-        if self.escount > 0:
-            self.escount -= 1
-        else:
-            pass
-        self.js.document.querySelector('.es').value = self.escount
     def increment(self):
         self.count += 1
-        self.js.document.querySelector('.cartQty').value = self.count
-        orders_dict = {}
-        db = shelve.open('order.db','c')
+        self.js.document.querySelector(".esc").innerHTML = self.count
+
+@app.route('/createCustomer',methods=['GET','POST'])
+def menu():
+    create_customer_form = CreateCustomerForm(request.form)
+    if request.method == 'POST':
+        carts_dict = {}
+        db = shelve.open('cart.db', 'c')
         try:
-            orders_dict = db['Orders']
+            carts_dict = db['Carts']
         except:
-            print("Error in retrieving number of items from order.db.")
-        order = {'fn':'Extravagant Slumber', 'price':18.50, 'qty':0}
-        orders_dict = order
-        db['Orders'] = orders_dict
+            print("Error in retrieving Carts from cart.db.")
+        cart = Customer.Cart(create_customer_form.fi, create_customer_form.fn, create_customer_form.fp, create_customer_form.fq, create_customer_form.esp, create_customer_form.esq, create_customer_form.sdp, create_customer_form.sdq,create_customer_form.qep, create_customer_form.qeq, create_customer_form.bdp, create_customer_form.bdq)
+        carts_dict[cart.get_cart_id()] = cart
+        db['Carts'] = carts_dict
         db.close()
-        orders_dict = {}
-        db = shelve.open('order.db', 'r')
-        orders_dict = db['Orders']
-        db.close()
-        qtys_dict ={}
-        db = shelve.open('qty.db', 'c')
-        qtys_list = []
-        for key in qtys_dict:
-            qty = qtys_dict.get(key)
-            qtys_list.append(qty)
-        qtys_dict ={}
-        db = shelve.open('qty.db','c')
-        try:
-            qtys_dict = db['Qtys']
-        except:
-            print('Error in retrieving count')
-        qty = self.count
-        qtys_dict = qty
-        db['Qtys'] = qtys_dict
-        self.js.document.querySelector('.cartQty').value = self.count
-        db.close()
-        qtys_dict = {}
-        db = shelve.open('qty.db', 'r')
-        qtys_dict = db['Qtys']
-        db.close()
-        qtys_list = []
-        for key in qtys_dict:
-            qty = qtys_dict.get(key)
-            qtys_list.append(qty)
-    def decrement(self):
-        if self.count > 0:
-            self.count -= 1
-        else:
-            pass
-        self.js.document.querySelector('.cartQty').value = self.count
-        qtys_dict ={}
-        db = shelve.open('qty.db','w')
-        try:
-            qtys_dict = db['Qtys']
-        except:
-            print('Error in retrieving count')
-        qty = self.count
-        qtys_dict = qty
-        db['Qtys'] = qtys_dict
-        self.js.document.querySelector('.cartQty').value = self.count
-        db.close()
-        qtys_dict = {}
-        db = shelve.open('qty.db', 'r')
-        qtys_dict = db['Qtys']
-        db.close()
-        qtys_list = []
-        for key in qtys_dict:
-            qty = qtys_dict.get(key)
-            qtys_list.append(qty)
+        return redirect(url_for('cart'))
+    return render_template('createCustomer.html', form=create_customer_form)
 @app.route('/createUser', methods=['GET', 'POST'])
 def create_user():
     create_user_form = CreateUserForm(request.form)

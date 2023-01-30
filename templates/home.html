@@ -2,11 +2,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
-
-
-
-
-
 {% extends "base.html" %}
 {% block title %}Big Deal{% endblock %}
 {% block content %}
@@ -19,47 +14,40 @@
     </ul>
   {% endif %}
 {% endwith %}
-<div id="mds" style="display:grid;grid-template-columns:repeat(auto-fit,280px);text-align:center;grid-gap:25px;padding:15px;margin:0">
+<script>
+
+</script>
+<div id="mds" style="display:grid;grid-template-columns:repeat(auto-fit,280px);text-align:center;grid-gap:25px;padding:15px;margin-top:50px">
         <div data-id="m1" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='ess.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
           <h2 class="msf-name" style="font-size:27px">Extravagant Slumber</h2>
           <h3 class="msf-p">$18.50</h3>
-          <div class="ar">
-              <button onclick="server.increment()" id="add1" style="border-radius: 5px">Add to Cart</button>
-              <button onclick="server.decrement()" id="remove1" style="border-radius: 5px">Remove</button>
-          </div>
         </div>
         <div data-id="m2" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='sd.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
           <h2 class="msf-name" style="font-size:30px">Sweet Dreams</h2>
           <h3 class="msf-p">$11.50</h3>
-          <div class="ar">
-              <button onclick="server.increment()" id="add2" style="border-radius: 5px">Add to Cart</button>
-              <button onclick="server.decrement()" id="remove2" style="border-radius: 5px">Remove</button>
-          </div>
         </div>
         <div data-id="m3" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='qe.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
           <h2 class="msf-name" style="font-size:30px">Quiet Elegance</h2>
           <h3 class="msf-p">$37.00</h3>
-          <div class="ar">
-              <button onclick="server.increment()" id="add3" style="border-radius: 5px">Add to Cart</button>
-              <button onclick="server.decrement()" id="remove3" style="border-radius: 5px">Remove</button>
-          </div>
         </div>
         <div data-id="m4" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='fff.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
           <h2 class="msf-name" style="font-size:30px">Flash-Fried-Fillet</h2>
           <h3 class="msf-p">$7.40</h3>
-          <div class="ar">
-              <button onclick="server.increment()" id="add4" style="border-radius: 5px">Add to Cart</button>
-              <button onclick="server.decrement()" id="remove4" style="border-radius: 5px">Remove</button>
-          </div>
         </div>
       </div>
 
 <script>
-
+    var count = 0;
+    function add() {
+        count++;
+        document.querySelector.value = count;
+    }
+    add();
+    console.log(count);
 </script>
 <br>
 <! this is css for the footer lol idk which one alr-->
@@ -775,10 +763,7 @@ color: black;
   margin-bottom:16px
 
 </style>
-
-
-
-     <footer class="footer">
+<footer class="footer">
       <h3>Thank You for Visiting Our Page</h3>
      <span class="footer-title">Done By:</span>
      <p class="copyright-text"> Zi Wei Zachary and Ethan</p>
@@ -788,7 +773,7 @@ color: black;
        <a href="https://twitter.com/nyptweets?s=20"><i class="fab fa-twitter"></i></a>
        <a href="https://www.instagram.com/nanyangpoly/?hl=en"><i class="fab fa-instagram"></i></a>
      </div>
-   </footer>
+</footer>
 <!--
 <script type="text/javascript">
 var bag = [];

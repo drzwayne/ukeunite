@@ -1,57 +1,53 @@
-class Qty:
-    count1_id = 0
-    def __init__(self):
-        self.__sum += Qty.count1_id
-        self.__add = Qty.count1_id + 1
-        self.__minus = Qty.count1_id - 1
-    def get_sum(self):
-        return self.__sum
-    def get_add(self):
-        return self.__add
-    def get_minus(self):
-        return self.__minus
-    def set_sum(self, sum):
-        self.__sum = sum
-    def set_add(self, add):
-        self.__add = add
-    def set_minus(self, minus):
-        self.__minus = minus
-
-class Order:
+class Cart:
     count_id = 0
-    def __init__(self, food_img, food_name, quantity, price):
-        Order.count_id += 1
-        self.__order_id = Order.count_id
-        self.__food_img = food_img
-        self.__food_name = food_name
-        self.__quantity = quantity
-        self.__price = price
-    def get_order_id(self):
-        return self.__order_id
+    def __init__(self, es, sd, qe, fff, amt):
+        Cart.count_id += 1
+        self.__cart_id = Cart.count_id
+        self.__es = es
+        self.__sd = sd
+        self.__qe = qe
+        self.__fff = fff
+        self.__amt = amt
+    def get_cart_id(self):
+        return self.__cart_id
+    def get_es(self):
+        return self.__es
+    def get_sd(self):
+        return self.__sd
+    def get_qe(self):
+        return self.__qe
+    def get_fff(self):
+        return self.__fff
+    def get_amt(self):
+        return self.__amt
+    def set_cart_id(self, cart_id):
+        self.__cart_id = cart_id
+    def set_es(self,es):
+        self.__es = es
+    def set_sd(self,sd):
+        self.__sd = sd
+    def set_qe(self,qe):
+        self.__qe = qe
+    def set_fff(self,fff):
+        self.__fff = fff
+    def set_amt(self,amt):
+        self.__amt = amt
 
-    def get_food_img(self):
-        return self.__food_img
 
-    def get_food_name(self):
-        return self.__food_name
+es = {'name':'Extravagant Slumber','price':18.50, 'qty':1}
+total = []
+def increase():
+    if es['qty'] == 1:
+        total.append(es)
+        es['qty'] += 1
+    elif es['qty'] > 1:
+        es['price'] = float(es['price'] * es['qty'])
+        return es['qty']
+def decrease():
+    if es['qty'] > 0:
+        es['qty'] -= 1
+        es['price'] = float(es['price'] * es['qty'])
+        return es['qty']
+    elif es['qty'] == 0:
+        total.pop(es)
 
-    def get_quanity(self):
-        return self.__quantity
-
-    def get_price(self):
-        return self.__price
-
-    def set_order_id(self, order_id):
-        self.__order_id = order_id
-
-    def set_food_img(self, food_img):
-        self.__food_img = food_img
-
-    def set_food_name(self, food_name):
-        self.__food_name = food_name
-
-    def set_quantity(self, quantity):
-        self.__quantity = quantity
-
-    def set_price(self, price):
-        self.__price = price

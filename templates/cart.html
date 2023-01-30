@@ -15,6 +15,7 @@
 <div>
 
 </div>
+
 <div style="display:flex; margin:0 20px">
     <table class="table table-striped" style="width:700px">
         <thead>
@@ -30,38 +31,36 @@
             <tr>
                 <td><img src="{{ url_for('static',filename='ess.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Extravagant Slumber</td>
-                <td><input type="text" disabled="" value="0" id="msfq1" class="es" style="width: 40px; text-align:center"></td>
-                <td>$ <input type="text" disabled="" value="0" id="tp1" class="esp" style="width: 70px"></td>
+                {% for cart in carts_list %}
+                    <td>{{ cart.get_esq() }}</td>
+                    <td>$ {{ cart.get_esp() }} </td>
+                {% endfor %}
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='sd.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Sweet Dreams</td>
-                <td><input type="text" disabled="" value="0" id="msfq2" class="sd" style="width: 40px; text-align:center"></td>
-                <td>$ <input type="text" disabled="" value="0" id="tp2" class="sdp" style="width: 70px"></td>
+                {% for cart in carts_list %}
+                    <td>{{ cart.get_sdq() }}</td>
+                    <td>$ {{ cart.get_sdp() }} </td>
+                {% endfor %}
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='qe.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Quiet Elegance</td>
-                <td><input type="text" disabled="" value="0" id="msfq3" class="qe" style="width: 40px; text-align:center"></td>
-                <td>$ <input type="text" disabled="" value="0" id="tp3" class="qep" style="width: 70px"></td>
+                {% for cart in carts_list %}
+                    <td>{{ cart.get_qeq() }}</td>
+                    <td>$ {{ cart.get_qep() }} </td>
+                {% endfor %}
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='fff.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Flash-Fried-Fillet</td>
-                <td><input type="text" disabled="" value="0" id="msfq4" class="fff" style="width: 40px; text-align:center"></td>
-                <td>$ <input type="text" disabled="" value="0" id="tp4" class="fffp" style="width: 70px"></td>
+                {% for cart in carts_list %}
+                    <td>{{ cart.get_bdq() }}</td>
+                    <td>$ {{ cart.get_bdp() }} </td>
+                {% endfor %}
+
             </tr>
-            {% for order in orders_list %}
-            <tr>
-<!--                <td class="fi"></td>
-                <td class="fn"></td>
-                <td class="fq"></td>
-                <td class="fp"></td>-->
-                <td>{{ order.get_food_name() }}</td>
-                <td>{{ order.get_quantity() }}</td>
-                <td>{{ order.get_price() }}</td>
-            </tr>
-        {% endfor %}
         </tbody>
     </table>
     <table class="table table-striped" style="width:500px; margin-left:50px; border:3px solid black" >
@@ -72,10 +71,9 @@
         </thead>
         <tbody>
             <tr>
-                <td><div class="alert alert-info">
-                    <strong>Extravagant Slumber</strong><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                </div></td>
-                <td>$18.50</td>
+                <td colspan="2"><div class="alert alert-info">
+                    <strong>Extravagant Slumber</strong><span style="margin-left:100px">$18.50</span><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div></td>
             </tr>
             <tr><td><div class="alert alert-info">
                     <strong>Sweet Dream</strong><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
@@ -87,7 +85,7 @@
                     <strong>Flash-Fried-Fillet</strong><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
             </div></td><td>$7.40</td></tr>
             <tr><td>Subtotal</td><td>$ <input type="text" disabled="" value="0" id="mtp" class="fffp" style="width: 70px"></td></tr>
-            <tr><td rowspan="2" style="align:center"><input type="submit" value="Pay" class="btn btn-primary" style="width:350px"/></td></tr>
+            <tr><td rowspan="2" style="align:center"><input type="submit" value="Pay" onclick="payment.html" class="btn btn-primary" style="width:350px"/></td></tr>
         </tbody>
     </table>
 </div>
@@ -820,3 +818,91 @@ color: black;
 
 
 {% endblock %}
+<!--
+ db = SQLALchemy()
+class BagModel(db.Model):
+    __tablename__ = "table"
+
+    id = db.Column(db.Integer, primary_key=True)
+    bag_id = db.Column(db.Integer(),unique = True)
+    pn = db.Column(db.String())
+    prc = db.Column(db.Integer())
+    qty = db.Column(db.Integer())
+
+    def __init__(self, bag_id,pn,prc,qty):
+        self.bag_id = bag_id
+        self.pn = pn
+        self.prc = prc
+        self.qty = qty
+
+    def __repr__(self):
+        return f"{self.bag_id}:{self.pn}:{self.prc}:{self.qty}"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
+
+@app.before_first_request
+def create_table():
+    db.create_all()
+
+@app.route('/data/create' , methods = ['GET','POST'])
+def create():
+    if request.method == 'GET':
+        return render_template('createpage.html')
+
+    if request.method == 'POST':
+        bag_id = request.form['bag_id']
+        pn = request.form['pn']
+        prc = request.form['prc']
+        qty = request.form['qty']
+        bag = BagModel(bag_id=bag_id, pn=pn, prc=prc, qty=qty)
+        db.session.add(bag)
+        db.session.commit()
+        return redirect('/data')
+
+
+@app.route('/data')
+def RetrieveList():
+    bags = BagModel.query.all()
+    return render_template('datalist.html',bags=bags)
+
+
+@app.route('/data/<int:id>')
+def RetrieveEmployee(id):
+    bag = BagModel.query.filter_by(Bag_id=id).first()
+    if bag:
+        return render_template('data.html', bag=bag)
+    return f"Bag with id ={id} do not exist"
+
+
+@app.route('/data/<int:id>/update',methods = ['GET','POST'])
+def update(id):
+    bag = BagModel.query.filter_by(bag_id=id).first()
+    if request.method == 'POST':
+        if bag:
+            db.session.delete(bag)
+            db.session.commit()
+            pn = request.form['pn']
+            prc = request.form['prc']
+            qty = request.form['qty']
+            bag = BagModel(bag_id=id, pn=pn, prc=prc, qty=qty)
+            db.session.add(bag)
+            db.session.commit()
+            return redirect(f'/data/{id}')
+        return f"Employee with id = {id} does not exist"
+
+    return render_template('update.html', bag=bag)
+
+
+@app.route('/data/<int:id>/delete', methods=['GET','POST'])
+def delete(id):
+    bag = BagModel.query.filter_by(bag_id=id).first()
+    if request.method == 'POST':
+        if bag:
+            db.session.delete(bag)
+            db.session.commit()
+            return redirect('/data')
+        abort(404)
+
+    return render_template('delete.html')
+ -->
