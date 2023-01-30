@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from Forms import CreateUserForm, CreateCustomerForm, CreateLoginForm
 import shelve, User, Customer, log
 import jyserver.Flask as jsf
+import ctypes
 app = Flask(__name__)
 app.secret_key = 'yippee'
 @app.route('/')
@@ -25,8 +26,11 @@ def login():
         email = request.form['email']
         password = request.form['password']
         if email in user_data:
+            print("Email accepted")
 
             if password == user_data[email][password]:
+
+                print("Password accepted")
 
                 session['user'] = email
 
