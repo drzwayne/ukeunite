@@ -12,11 +12,16 @@ def get_json():
     return jsonify('cart.html')
 @app.route('/loginUser', methods=['GET', 'POST'])
 def login():
+
     if request.method == 'POST':
-        session.pop('user', None)
-        if request.form['password'] == 'password':
-            session['user'] = request.form['username']
-            return redirect(url_for('retrieve_guest'))
+        db = shelve.open('user.db')
+        user_data = db['user']
+        db.close()
+        email = request.form['email']
+        password = request.form['password']
+        if email in user_data:
+            if password == user_data[email][password]:
+                session['user'] = email
     return render_template('loginUser.html')
 @app.route('/retrieveGuest', methods=['GET','POST'])
 def logged():
