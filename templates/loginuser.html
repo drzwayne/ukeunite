@@ -2,6 +2,9 @@
 {% block title %}Login Account{% endblock %}
 {% block content %}
 {% from "includes/_formHelper.html" import render_field %}
+{% if error_message %}
+  <div class="error-message">{{ error_message }}</div>
+{% endif %}
 <div style="display:inline-flex; margin-top:50px;">
     <div style="display:block"><h1 class="display-4" style="margin-left:180px">Login</h1>
     <form method="POST" action="/retrieveGuest" style="margin-left:180px">

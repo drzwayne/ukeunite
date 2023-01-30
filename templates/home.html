@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Big Deal{% endblock %}
 {% block content %}
+{% if emailchecked %}
+  <div class="emailchecked">{{ emailchecked }}</div>
+{% endif %}
+
 <div id="mds" style="display:grid;grid-template-columns:repeat(auto-fit,280px);text-align:center;grid-gap:25px;padding:15px;margin:0">
         <div data-id="m1" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='ess.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">

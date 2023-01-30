@@ -5,13 +5,18 @@ import jyserver.Flask as jsf
 app = Flask(__name__)
 app.secret_key = 'yippee'
 @app.route('/')
+
 def home():
- return App.render(render_template('home.html'))
+     if 'user' in session:
+        return App.render(render_template("home.html", username=session['user']))
+     else:
+         return App.render(render_template('home.html'))
 @app.route('/json')
 def get_json():
     return jsonify('cart.html')
 @app.route('/loginUser', methods=['GET', 'POST'])
 def login():
+    error_message = ""
 
     if request.method == 'POST':
         db = shelve.open('user.db')
@@ -20,9 +25,20 @@ def login():
         email = request.form['email']
         password = request.form['password']
         if email in user_data:
+
             if password == user_data[email][password]:
+
                 session['user'] = email
-    return render_template('loginUser.html')
+
+                return render_template(url_for('home'))
+            else:
+                error_message = "Incorrect password"
+        else:
+            error_message = "Invalid email"
+    return render_template('loginuser.html', error_message=error_message)
+
+
+
 @app.route('/retrieveGuest', methods=['GET','POST'])
 def logged():
     if g.user:
