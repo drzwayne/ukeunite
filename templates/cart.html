@@ -33,31 +33,31 @@
                 <td>Extravagant Slumber</td>
                 {% for cart in carts_list %}
                     <td>{{ cart.get_cart_id() }}</td>
-                    <td>$ {{ cart.get_cart_id() * cart.get_esp() }} </td>
+                    <td>{{ cart.get_cart_id() * cart.get_esp() }}</td>
                 {% endfor %}
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='sd.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Sweet Dreams</td>
-                {% for cart in carts_list %}
-                    <td>{{ cart.get_sdq() }}</td>
-                    <td>$ {{ cart.get_sdp() }} </td>
+                {% for cbrt in cbrts_list %}
+                    <td>{{ cbrt.get_cbrt_id() }}</td>
+                    <td>$ {{ cbrt.get_cbrt_id() * cbrt.get_sdp() }} </td>
                 {% endfor %}
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='qe.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Quiet Elegance</td>
-                {% for cart in carts_list %}
-                    <td>{{ cart.get_qeq() }}</td>
-                    <td>$ {{ cart.get_qep() }} </td>
+                {% for ccrt in ccrts_list %}
+                    <td>{{ ccrt.get_ccrt_id() }}</td>
+                    <td>$ {{ ccrt.get_ccrt_id() * ccrt.get_qep() }} </td>
                 {% endfor %}
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='fff.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Flash-Fried-Fillet</td>
-                {% for cart in carts_list %}
-                    <td>{{ cart.get_bdq() }}</td>
-                    <td>$ {{ cart.get_bdp() }} </td>
+                {% for cdrt in cdrts_list %}
+                    <td>{{ cdrt.get_cdrt_id() }}</td>
+                    <td>$ {{ cdrt.get_cdrt_id() * cdrt.get_bdp() }} </td>
                 {% endfor %}
 
             </tr>
@@ -87,7 +87,12 @@
                     <strong>Flash-Fried-Fillet</strong><span style="margin-left:130px">$7.40</span><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                 </div></td>
             </tr>
-            <tr><td>Subtotal</td><td>$ 888</td></tr>
+            <tr><td>Subtotal</td>
+                <td>{% for cart in carts_list %}{% for cbrt in cbrts_list %}{% for ccrt in ccrts_list %}{% for cdrt in cdrts_list %}
+                    <td>$ {{ cart.get_cart_id() * cart.get_esp() }}+{{cbrt.get_cbrt_id() * cbrt.get_sdp() }}+{{ccrt.get_ccrt_id() * ccrt.get_qep() }} + {{cdrt.get_cdrt_id() * cdrt.get_bdp() }} </td>
+                {% endfor %}{% endfor %}{% endfor %}{% endfor %}
+                </td>
+            </tr>
             <tr><td colspan="5" style="align:center"><input type="submit" value="Pay" onclick="payment.html" class="btn btn-primary" style="width:350px"/></td></tr>
         </tbody>
     </table>
@@ -806,9 +811,9 @@ color: black;
 </style>
 
  <footer class="footer">
-      <h3>Thank You for Visiting Our Page</h3>
-     <span class="footer-title">Done By:</span>
-     <p class="copyright-text"> Zi Wei Zachary and Ethan</p>
+      <h3>Thank You for Patronising Big Deal</h3>
+     <!--<span class="footer-title">Members:</span>-->
+     <p class="copyright-text"> Zwayne, Zachary and Ethan</p>
      <br>
      <div class="media-icons">
        <a href="https://www.facebook.com/nanyangpoly/"><i class="fab fa-facebook-f"></i></a>

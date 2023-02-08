@@ -14,12 +14,15 @@ class CreateUserForm(Form):
     remarks = TextAreaField('Remarks', [validators.Optional()])
     password = StringField('Password', [validators.Length(min=5, max=10), validators.DataRequired()])
 class CreateCustomerForm(Form):
-    esp = 18.50
-    esq = 0
     sdp = 11.50
     sdq = 0
+class CreateLaylaForm(Form):
+    esp = 18.50
+    esq = 0
+class CreateAyatoForm(Form):
     qep = 37.00
     qeq = 0
+class CreateBeidouForm(Form):
     bdp = 7.40
     bdq = 0
 class CreateMemberForm(Form):

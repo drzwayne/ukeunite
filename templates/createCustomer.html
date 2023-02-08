@@ -7,38 +7,80 @@
           <img src="{{ url_for('static',filename='ess.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
           <h2 class="msf-name" style="font-size:27px">Extravagant Slumber</h2>
           <h3 class="msf-p">$18.50</h3>
-            <form method="POST" action="">
-                <input type="submit" value="Add" class="btn btn-primary"/>
-                <input type="reset" value="Clear" class="btn btn-primary">
+            <form method="POST" action="/extraSlum">
+                <input type="submit" value="Add ES" name="act1" class="btn btn-primary"/>
+                <input type="submit" value="Remove ES" name="clr1" class="btn btn-primary">
             </form>
         </div>
         <div data-id="m2" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='sd.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
           <h2 class="msf-name" style="font-size:30px">Sweet Dreams</h2>
           <h3 class="msf-p">$11.50</h3>
-            <form method="POST" action="">
-                <input type="submit" value="Add" class="btn btn-primary"/>
+            <form method="POST" action="/sweetDreams">
+                <input type="submit" value="Add SD" name="sd" class="btn btn-primary"/>
             </form>
         </div>
         <div data-id="m3" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='qe.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
           <h2 class="msf-name" style="font-size:30px">Quiet Elegance</h2>
           <h3 class="msf-p">$37.00</h3>
-            <form method="POST" action="">
-                <input type="submit" value="Add" class="btn btn-primary"/>
+            <form method="POST" action="/kamisatoClan">
+                <input type="submit" value="Add QE" name="qe" class="btn btn-primary"/>
             </form>
         </div>
         <div data-id="m4" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='fff.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
           <h2 class="msf-name" style="font-size:30px">Flash-Fried-Fillet</h2>
           <h3 class="msf-p">$7.40</h3>
-            <form method="POST" action="">
-                <input type="submit" value="Add" class="btn btn-primary"/>
+            <form method="POST" action="/ningGuang">
+                <input type="submit" value="Add BD" name="bd" class="btn btn-primary"/>
             </form>
         </div>
       </div>
 {% endblock %}
 <!--
+class Cdrt():
+    bdp = 7.4
+    bdq = 1
+    cznt_id = 0
+    def __init__(self, bdp, bdq):
+        Cdrt.cznt_id += 1
+        self.__cdrt_id = Cdrt.cznt_id
+        self.__bdp = bdp
+        self.__bdq = bdq
+    def get_cdrt_id(self):
+        return self.__cdrt_id
+    def get_bdp(self):
+        return self.__bdp
+    def get_bdq(self):
+        return self.__bdq
+    def set_cdrt_id(self, cdrt_id):
+        self.__cdrt_id = cdrt_id
+    def set_bdp(self,bdp):
+        self.__bdp = bdp
+    def set_bdq(self,bdq):
+        self.__bdq = bdq
+        cdrts_dict = {}
+        db = shelve.open('cdrt.db', 'c')
+        try:
+            cdrts_dict = db['Cdrts']
+        except:
+            print("Error in retrieving Cdrts from cdrt.db.")
+        cdrt = Customer.Cdrt(7.4, 0)
+        cdrts_dict[cdrt.get_cdrt_id()] = cdrt
+        db['Cdrts'] = cdrts_dict
+        db.close()
+
+            cdrts_dict = {}
+    db = shelve.open('cdrt.db', 'r')
+    cdrts_dict = db['Cdrts']
+    db.close()
+    cdrts_list = []
+    for key in cdrts_dict:
+        cdrt = cdrts_dict.get(key)
+        if len(cdrts_list) >0 :
+            cdrts_list.pop(0)
+        cdrts_list.insert(0,cdrt)
                  <td><input type="text" disabled="" value="0" id="msfq4" class="fff" style="width: 40px; text-align:center"></td>
                 <td>$ <input type="text" disabled="" value="0" id="tp4" class="fffp" style="width: 70px"></td>
                         carts_dict = db['Carts']

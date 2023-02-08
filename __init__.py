@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session,g
-from Forms import CreateUserForm, CreateCustomerForm
+from Forms import CreateUserForm, CreateCustomerForm, CreateLaylaForm, CreateAyatoForm ,CreateBeidouForm
 import shelve, User, Customer, log, Cart
 import jyserver.Flask as jsf
 import ctypes
@@ -72,48 +72,146 @@ def bfr_rq():
 
 @app.route('/cart')
 def cart():
-    carts_dict = {}
-    db = shelve.open('cart.db', 'r')
-    carts_dict = db['Carts']
-    db.close()
-    carts_list = []
-    for key in carts_dict:
-        cart = carts_dict.get(key)
-        if len(carts_list) >0 :
-            carts_list.pop(0)
-        carts_list.insert(0,cart)
-    return render_template('cart.html', count=len(carts_list), carts_list=carts_list)
+    return render_template('cart.html')
 @jsf.use(app)
 class App:
     def __init__(self):
         self.count = 0
     def increment(self):
         self.count += 1
-        self.js.document.querySelector(".esc").innerHTML = self.count
-
-@app.route('/createCustomer',methods=['GET','POST'])
-def menu():
-    create_customer_form = CreateCustomerForm(request.form)
+        self.js.document.querySelector(".cartQty").value = self.count
+    def decrement(self):
+        self.count -= 1
+        self.js.document.querySelector(".cartQty").value = self.count
+@app.route('/extraSlum', methods= ['GET','POST'])
+def layla():
+    create_l_form = CreateLaylaForm(request.form)
     if request.method == 'POST':
         carts_dict = {}
         db = shelve.open('cart.db', 'c')
-        sh = shelve.open("student")
-        sh['name'] = "Prachee"
-        sh['age'] = 21
-        sh['marks'] = 95
-        sh.close()
         try:
             carts_dict = db['Carts']
         except:
             print("Error in retrieving Carts from cart.db.")
-        cart = Customer.Cart(create_customer_form.esp, create_customer_form.esq, create_customer_form.sdp, create_customer_form.sdq,create_customer_form.qep, create_customer_form.qeq, create_customer_form.bdp, create_customer_form.bdq)
+        cart = Customer.Cart(create_l_form.esp, create_l_form.esq)
         carts_dict[cart.get_cart_id()] = cart
         db['Carts'] = carts_dict
-        #carts_dict.pop(cart.get_cart_id())
-        print(list(db.items()))
         db.close()
-        return redirect(url_for('cart'))
+        if request.form.get('act1') == 'Add ES':
+            carts_dict = {}
+            db = shelve.open('cart.db', 'r')
+            carts_dict = db['Carts']
+            db.close()
+            carts_list = []
+            for key in carts_dict:
+                cart = carts_dict.get(key)
+                if len(carts_list) >0 :
+                    carts_list.pop(0)
+                carts_list.insert(0,cart)
+            print('layla')
+            return render_template('cart.html', carts_list=carts_list)
+        elif request.form.get('clr1') == 'Remove ES':
+            carts_dict = {}
+            db = shelve.open('cart.db', 'w')
+            carts_dict = db['Carts']
+            carts_dict[cart.decrease()] = cart
+            db['Carts'] = carts_dict
+            carts_list = []
+            for key in carts_dict:
+                cart = carts_dict.get(key)
+                if len(carts_list) >0 :
+                    carts_list.remove(cart[0])
+            db.close()
+            print('clear layla')
+            return render_template('cart.html', carts_list=carts_list)
+    return render_template('createCustomer.html', form=create_l_form)
+@app.route('/sweetDreams', methods= ['GET','POST'])
+def xiao():
+    create_customer_form = CreateCustomerForm(request.form)
+    if request.method == 'POST':
+        cbrts_dict = {}
+        db = shelve.open('cbrt.db', 'c')
+        try:
+            cbrts_dict = db['Cbrts']
+        except:
+            print("Error in retrieving Cbrts from cbrt.db.")
+        cbrt = Customer.Cbrt(create_customer_form.sdp, create_customer_form.sdq)
+        cbrts_dict[cbrt.get_cbrt_id()] = cbrt
+        db['Cbrts'] = cbrts_dict
+        db.close()
+        if request.form.get('sd') == 'Add SD':
+            cbrts_dict = {}
+            db = shelve.open('cbrt.db', 'r')
+            cbrts_dict = db['Cbrts']
+            db.close()
+            cbrts_list = []
+            for key in cbrts_dict:
+                cbrt = cbrts_dict.get(key)
+                if len(cbrts_list) >0 :
+                    cbrts_list.pop(0)
+                cbrts_list.insert(0,cbrt)
+            print('xiao')
+            return render_template('cart.html', cbrts_list=cbrts_list)
     return render_template('createCustomer.html', form=create_customer_form)
+@app.route('/kamisatoClan', methods= ['GET','POST'])
+def ayato():
+    create_a_form = CreateAyatoForm(request.form)
+    if request.method == 'POST':
+        ccrts_dict = {}
+        db = shelve.open('ccrt.db', 'c')
+        try:
+            ccrts_dict = db['Ccrts']
+        except:
+            print("Error in retrieving Ccrts from ccrt.db.")
+        ccrt = Customer.Ccrt(create_a_form.qep, create_a_form.qeq)
+        ccrts_dict[ccrt.get_ccrt_id()] = ccrt
+        db['Ccrts'] = ccrts_dict
+        db.close()
+        if request.form.get('qe') == 'Add QE':
+            ccrts_dict = {}
+            db = shelve.open('ccrt.db', 'r')
+            ccrts_dict = db['Ccrts']
+            db.close()
+            ccrts_list = []
+            for key in ccrts_dict:
+                ccrt = ccrts_dict.get(key)
+                if len(ccrts_list) >0 :
+                    ccrts_list.pop(0)
+                ccrts_list.insert(0,ccrt)
+            print('ayato')
+            return render_template('cart.html', ccrts_list=ccrts_list)
+    return render_template('createCustomer.html', form=create_a_form)
+@app.route('/ningGuang', methods= ['GET','POST'])
+def beidou():
+    create_b_form = CreateBeidouForm(request.form)
+    if request.method == 'POST':
+        cdrts_dict = {}
+        db = shelve.open('cdrt.db', 'c')
+        try:
+            cdrts_dict = db['Cdrts']
+        except:
+            print("Error in retrieving Cdrts from cdrt.db.")
+        cdrt = Customer.Cdrt(create_b_form.bdp, create_b_form.bdq)
+        cdrts_dict[cdrt.get_cdrt_id()] = cdrt
+        db['Cdrts'] = cdrts_dict
+        db.close()
+        if request.form.get('bd') == 'Add BD':
+            cdrts_dict = {}
+            db = shelve.open('cdrt.db', 'r')
+            cdrts_dict = db['Cdrts']
+            db.close()
+            cdrts_list = []
+            for key in cdrts_dict:
+                cdrt = cdrts_dict.get(key)
+                if len(cdrts_list) >0 :
+                    cdrts_list.pop(0)
+                cdrts_list.insert(0,cdrt)
+            print('i love beidou :>')
+            return render_template('cart.html', cdrts_list=cdrts_list)
+    return render_template('createCustomer.html', form=create_b_form)
+@app.route('/createCustomer', methods=['GET', 'POST'])
+def menu():
+    return render_template('createCustomer.html')
 @app.route('/createUser', methods=['GET', 'POST'])
 def create_user():
     create_user_form = CreateUserForm(request.form)
@@ -190,13 +288,6 @@ def delete_user(id):
     db['Users'] = users_dict
     db.close()
     return redirect(url_for('retrieve_users'))
-@app.route('/deleteOrder/<int:id>', methods=['POST'])
-def delete_order(id):
-    orders_dict = {}
-    db = shelve.open('order.db', 'w')
-    orders_dict = db['Orders']
-    orders_dict.pop(id)
-    db['Orders'] = orders_dict
-    db.close()
+
 if __name__ == '__main__':
     app.run()
