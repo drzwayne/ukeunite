@@ -99,7 +99,7 @@ def menu():
             carts_dict = db['Carts']
         except:
             print("Error in retrieving Carts from cart.db.")
-        cart = Customer.Cart(create_customer_form.fi, create_customer_form.fn, create_customer_form.fp, create_customer_form.fq, create_customer_form.esp, create_customer_form.esq, create_customer_form.sdp, create_customer_form.sdq,create_customer_form.qep, create_customer_form.qeq, create_customer_form.bdp, create_customer_form.bdq)
+        cart = Customer.Cart(create_customer_form.esp, create_customer_form.esq, create_customer_form.sdp, create_customer_form.sdq,create_customer_form.qep, create_customer_form.qeq, create_customer_form.bdp, create_customer_form.bdq)
         carts_dict[cart.get_cart_id()] = cart
         db['Carts'] = carts_dict
         db.close()

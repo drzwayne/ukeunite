@@ -14,18 +14,14 @@ class CreateUserForm(Form):
     remarks = TextAreaField('Remarks', [validators.Optional()])
     password = StringField('Password', [validators.Length(min=5, max=10), validators.DataRequired()])
 class CreateCustomerForm(Form):
-    fi = ['es','sd','qe','fff']
-    fn = ['Extravagant Slumber', 'Sweet Dreams', 'Quiet Elegance', 'Flash-Fried-Fillet']
-    fp = [18.5, 11.5, 37, 7.4]
-    fq = [1, 1, 1, 1]
     esp = 18.50
     esq = 0
     sdp = 11.50
-    sdq = 1
+    sdq = 0
     qep = 37.00
-    qeq = 1
+    qeq = 0
     bdp = 7.40
-    bdq = 1
+    bdq = 0
 class CreateMemberForm(Form):
     first_name = StringField('First Name', [validators.Length(min=1, max=150), validators.DataRequired()])
     last_name = StringField('Last Name', [validators.Length(min=1, max=150), validators.DataRequired()])

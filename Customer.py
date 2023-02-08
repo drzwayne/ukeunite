@@ -1,8 +1,4 @@
 class Cart:
-    fi = []
-    fn = ['Extravagant Slumber', 'Sweet Dreams', 'Quiet Elegance', 'Flash-Fried-Fillet']
-    fp = [18.5, 11.5, 37, 7.4]
-    fq = [1, 1, 1, 1]
     esp = 18.50
     esq = 1
     sdp = 11.50
@@ -12,13 +8,18 @@ class Cart:
     bdp = 7.40
     bdq = 1
     count_id = 0
-    def __init__(self, fi, fn,fp,fq, esp, esq, sdp,sdq, qep, qeq, bdp,bdq):
+    sdc_id = 0
+    qec_id = 0
+    fffc_id = 0
+    def __init__(self, esp, esq, sdp,sdq, qep, qeq, bdp,bdq):
         Cart.count_id += 1
+        Cart.sdc_id += 1
+        Cart.qec_id += 1
+        Cart.fffc_id += 1
         self.__cart_id = Cart.count_id
-        self.__fi = fi
-        self.__fn = fn
-        self.__fp = fp
-        self.__fq = fq
+        self.__cart2_id = Cart.sdc_id
+        self.__cart3_id = Cart.qec_id
+        self.__cart4_id = Cart.fffc_id
         self.__esp = esp
         self.__esq = esq
         self.__sdp = sdp
@@ -29,16 +30,12 @@ class Cart:
         self.__bdq = bdq
     def get_cart_id(self):
         return self.__cart_id
-    def get_fi(self):
-        return self.__fi
-    def get_fn(self):
-        return self.__fn
-    def get_fp(self):
-        return self.__fp
-    def get_fq(self):
-        return self.__fq
-    def get_amt(self):
-        return self.__amt
+    def get_cart2_id(self):
+        return self.__cart2_id
+    def get_cart3_id(self):
+        return self.__cart3_id
+    def get_cart4_id(self):
+        return self.__cart4_id
     def get_esp(self):
         return self.__esp
     def get_esq(self):
@@ -57,16 +54,12 @@ class Cart:
         return self.__bdq
     def set_cart_id(self, cart_id):
         self.__cart_id = cart_id
-    def set_fi(self,fi):
-        self.__fi = fi
-    def set_fn(self,fn):
-        self.__fn = fn
-    def set_fp(self,fp):
-        self.__fp = fp
-    def set_fq(self,fq):
-        self.__fq = fq
-    def set_amt(self,amt):
-        self.__amt = amt
+    def set_cart2_id(self, cart2_id):
+        self.__cart2_id = cart2_id
+    def set_cart3_id(self, cart3_id):
+        self.__cart3_id = cart3_id
+    def set_cart4_id(self, cart4_id):
+        self.__cart4_id = cart4_id
     def set_esp(self,esp):
         self.__esp = esp
     def set_esq(self,esq):
