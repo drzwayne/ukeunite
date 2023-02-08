@@ -19,7 +19,7 @@ class CreateCustomerForm(Form):
     fp = [18.5, 11.5, 37, 7.4]
     fq = [1, 1, 1, 1]
     esp = 18.50
-    esq = 1
+    esq = 0
     sdp = 11.50
     sdq = 1
     qep = 37.00

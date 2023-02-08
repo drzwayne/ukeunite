@@ -65,8 +65,8 @@ class Cart:
         self.__fp = fp
     def set_fq(self,fq):
         self.__fq = fq
-    def set_amt(self):
-        self.__amt = self.__fq * self.__fp
+    def set_amt(self,amt):
+        self.__amt = amt
     def set_esp(self,esp):
         self.__esp = esp
     def set_esq(self,esq):
