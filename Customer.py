@@ -77,4 +77,12 @@ class Cart:
     def set_bdq(self,bdq):
         self.__bdq = bdq
 
-
+class Minus(Cart):
+    def __init__(self, esp, esq, sdp,sdq, qep, qeq, bdp,bdq):
+        super().__init__(esp, esq, sdp,sdq, qep, qeq, bdp,bdq)
+        Cart.count_id -= 1
+        self.__cart_id = Cart.count_id
+    def get_cart_id(self):
+        return self.__cart_id
+    def set_cart_id(self, cart_id):
+        self.__cart_id = cart_id

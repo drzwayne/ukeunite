@@ -79,7 +79,9 @@ def cart():
     carts_list = []
     for key in carts_dict:
         cart = carts_dict.get(key)
-        carts_list.append(cart)
+        if len(carts_list) >0 :
+            carts_list.pop(0)
+        carts_list.insert(0,cart)
     return render_template('cart.html', count=len(carts_list), carts_list=carts_list)
 @jsf.use(app)
 class App:
@@ -95,6 +97,11 @@ def menu():
     if request.method == 'POST':
         carts_dict = {}
         db = shelve.open('cart.db', 'c')
+        sh = shelve.open("student")
+        sh['name'] = "Prachee"
+        sh['age'] = 21
+        sh['marks'] = 95
+        sh.close()
         try:
             carts_dict = db['Carts']
         except:
@@ -102,6 +109,8 @@ def menu():
         cart = Customer.Cart(create_customer_form.esp, create_customer_form.esq, create_customer_form.sdp, create_customer_form.sdq,create_customer_form.qep, create_customer_form.qeq, create_customer_form.bdp, create_customer_form.bdq)
         carts_dict[cart.get_cart_id()] = cart
         db['Carts'] = carts_dict
+        #carts_dict.pop(cart.get_cart_id())
+        print(list(db.items()))
         db.close()
         return redirect(url_for('cart'))
     return render_template('createCustomer.html', form=create_customer_form)
