@@ -8,17 +8,52 @@ app.secret_key = 'yippee'
 
 
 @app.route('/')
-def home():
+def fhome():
+    welcome_mes = ""
     try:
-        current_user_db = shelve.open("currentuser.db", "r")
-        current_user = current_user_db["user"]
-        current_user_db.close()
-        return render_template('home.html', current_user=current_user)
-    except:
-        current_user_db = shelve.open("currentuser.db", "c")
-        current_user_db.close()
+        user_dict = {}
+        db = shelve.open('users.db', 'r')
+        users_dict = db['Users']
+        currentcheck = User.get_curr()
+        for key in users_dict:
+            user = users_dict[key]
+            if currentcheck == 1:
+                user = user.get_first_name()
+                welcome_mes = "Welcome Back, "+user
 
-    return render_template('home.html')
+            db.close()
+        return render_template('home.html', welcome_mes = welcome_mes)
+    except:
+        user_dict = {}
+        db = shelve.open('users.db', 'c')
+        welcome_mes = "Guest Login"
+        db.close()
+        return render_template('home.html', welcome_mes = welcome_mes)
+
+@app.route('/home')
+def home():
+    welcome_mes = ""
+    try:
+        user_dict = {}
+        db = shelve.open('users.db', 'r')
+        users_dict = db['Users']
+        for key in users_dict:
+            user = users_dict[key]
+            if user.get_curr() == 1:
+                user = user.get_first_name()
+                welcome_mes = "Welcome Back, "+user
+
+
+        db.close()
+        return render_template('home.html', welcome_mes = welcome_mes)
+    except:
+        user_dict = {}
+        db = shelve.open('users.db', 'c')
+        welcome_mes = "Guest Login"
+        db.close()
+
+        return render_template('home.html', welcome_mes = welcome_mes)
+
 
 
 @app.route('/loginUser', methods=['GET', 'POST'])
@@ -27,9 +62,9 @@ def login():
 
     if request.method == 'POST':
         users_dict = {}
-        db = shelve.open('user.db', 'r')
+        db = shelve.open('user.db', 'w')
         users_dict = db['Users']
-        db.close()
+
 
         email = request.form['email']
         password = request.form['password']
@@ -40,16 +75,18 @@ def login():
                 if password == user.get_password():
 
 
-                    flash("Password accepted")
 
                     session['user'] = email
-                    current_user_db = shelve.open("currentuser.db", "c")
-                    current_user_db["user"] = user
-                    current_user_db.close()
+
+                    user.set_curr(1)
+                    users_dict[key] = user
+                    db['Users'] = users_dict
+                    db.close()
 
 
 
-                    return render_template('home.html')
+
+                    return redirect('/home')
                 else:
                     error_message = "Incorrect password"
             else:
@@ -97,11 +134,6 @@ def menu():
     if request.method == 'POST':
         carts_dict = {}
         db = shelve.open('cart.db', 'c')
-        sh = shelve.open("student")
-        sh['name'] = "Prachee"
-        sh['age'] = 21
-        sh['marks'] = 95
-        sh.close()
         try:
             carts_dict = db['Carts']
         except:
@@ -112,7 +144,7 @@ def menu():
         #carts_dict.pop(cart.get_cart_id())
         print(list(db.items()))
         db.close()
-        return redirect(url_for('cart'))
+        #return redirect(url_for('cart'))
     return render_template('createCustomer.html', form=create_customer_form)
 @app.route('/createUser', methods=['GET', 'POST'])
 def create_user():
@@ -126,6 +158,7 @@ def create_user():
             print("Error in retrieving Users from user.db.")
         user = User.User(create_user_form.first_name.data, create_user_form.last_name.data, create_user_form.gender.data, create_user_form.email.data,create_user_form.password.data, create_user_form.birthday.data, create_user_form.address.data, create_user_form.payment_method.data, create_user_form.credit_number.data, create_user_form.exp_number.data, create_user_form.remarks.data,   create_user_form.cvc.data)
         users_dict[user.get_user_id()] = user
+
         db['Users'] = users_dict
         db.close()
         return redirect(url_for('retrieve_users'))

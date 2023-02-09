@@ -40,7 +40,7 @@
                 <td><img src="{{ url_for('static',filename='sd.png') }}" class="msf-img" style="height:70px; width:70px"></td>
                 <td>Sweet Dreams</td>
                 {% for cart in carts_list %}
-                    <td>{{ cart.get_sdq() }}</td>
+                    <td>{{ cart.get_cart2_id }}</td>
                     <td>$ {{ cart.get_sdp() }} </td>
                 {% endfor %}
             </tr>
@@ -88,7 +88,7 @@
                 </div></td>
             </tr>
             <tr><td>Subtotal</td><td>$ 888</td></tr>
-            <tr><td colspan="5" style="align:center"><input type="submit" value="Pay" onclick="payment.html" class="btn btn-primary" style="width:350px"/></td></tr>
+            <tr><td colspan="5" style="align:center"><input type="submit" value="Pay" onclick="Payment.html" class="btn btn-primary" style="width:350px"/></td></tr>
         </tbody>
     </table>
 </div>
