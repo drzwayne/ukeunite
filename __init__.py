@@ -1,25 +1,90 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session,g
-from Forms import CreateUserForm, CreateCustomerForm, CreateLaylaForm, CreateAyatoForm ,CreateBeidouForm
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session, g
+from Forms import CreateUserForm, CreateCustomerForm, CreateLaylaForm, CreateAyatoForm, CreateBeidouForm
 import shelve, User, Customer, log, Cart
 import jyserver.Flask as jsf
 import ctypes
+
 app = Flask(__name__)
 app.secret_key = 'yippee'
+@app.route('/home')
+def home():
+    welcome_mes = "Guest Login"
+    try:
+        user_dict = {}
+        db = shelve.open('user.db', 'r')
+        user_dict = db['Users']
 
+        for key in user_dict:
+            curr_user = user_dict[key]
+            if curr_user.get_curr() == 1:
+                welcome_mes = "Welcome Back, " + curr_user.get_first_name()
+                break
+
+        db.close()
+        return render_template('home.html', welcome_mes=welcome_mes)
+
+    except FileNotFoundError:
+        welcome_mes = 'File not found'
+
+    except PermissionError:
+        welcome_mes = 'Permisson error'
+
+    except KeyError:
+        welcome_mes = 'Key Error'
+
+    except AttributeError:
+        welcome_mes = 'Attribute Error'
+
+    except TypeError:
+        welcome_mes = 'Type Error'
+
+    except EOFError:
+        welcome_mes = 'End of File error'
+
+    except:
+        welcome_mes = "Other error"
+
+    return render_template('home.html', welcome_mes=welcome_mes)
 
 @app.route('/')
-def home():
+def fhome():
+    welcome_mes = "Guest Login"
     try:
-        current_user_db = shelve.open("currentuser.db", "r")
-        current_user = current_user_db["user"]
-        current_user_db.close()
-        return render_template('home.html', current_user=current_user)
+        user_dict = {}
+        db = shelve.open('user.db', 'r')
+        user_dict = db['Users']
+
+        for key in user_dict:
+            curr_user = user_dict[key]
+            if curr_user.get_curr() == 1:
+                welcome_mes = "Welcome Back, " + curr_user.get_first_name()
+                break
+
+        db.close()
+        return render_template('home.html', welcome_mes=welcome_mes)
+
+    except FileNotFoundError:
+        welcome_mes = 'File not found'
+
+    except PermissionError:
+        welcome_mes = 'Permisson error'
+
+    except KeyError:
+        welcome_mes = 'Key Error'
+
+    except AttributeError:
+        welcome_mes = 'Attribute Error'
+
+    except TypeError:
+        welcome_mes = 'Type Error'
+
+    except EOFError:
+        welcome_mes = 'End of File error'
+
     except:
-        current_user_db = shelve.open("currentuser.db", "c")
-        current_user_db.close()
+        welcome_mes = "Other error"
 
-    return render_template('home.html')
-
+    return render_template('home.html', welcome_mes=welcome_mes)
 
 @app.route('/loginUser', methods=['GET', 'POST'])
 def login():
@@ -27,9 +92,9 @@ def login():
 
     if request.method == 'POST':
         users_dict = {}
-        db = shelve.open('user.db', 'r')
+        db = shelve.open('user.db', 'w')
         users_dict = db['Users']
-        db.close()
+
 
         email = request.form['email']
         password = request.form['password']
@@ -39,17 +104,14 @@ def login():
 
                 if password == user.get_password():
 
-
                     flash("Password accepted")
 
-                    session['user'] = email
-                    current_user_db = shelve.open("currentuser.db", "c")
-                    current_user_db["user"] = user
-                    current_user_db.close()
+                    user.set_curr(1)
+                    users_dict[key] = user
+                    db['Users'] = users_dict
+                    db.close()
 
-
-
-                    return render_template('home.html')
+                    return redirect('/home')
                 else:
                     error_message = "Incorrect password"
             else:
@@ -57,12 +119,12 @@ def login():
     return render_template('loginuser.html', error_message=error_message)
 
 
-
-@app.route('/retrieveGuest', methods=['GET','POST'])
+@app.route('/retrieveGuest', methods=['GET', 'POST'])
 def logged():
     if g.user:
         return render_template('retrieveGuest.html', user=session['user'])
     return redirect(url_for('home'))
+
 
 @app.before_request
 def bfr_rq():
@@ -70,20 +132,16 @@ def bfr_rq():
     if 'user' in session:
         g.user = session['user']
 
+
 @app.route('/cart')
 def cart():
     return render_template('cart.html')
-@jsf.use(app)
-class App:
-    def __init__(self):
-        self.count = 0
-    def increment(self):
-        self.count += 1
-        self.js.document.querySelector(".cartQty").value = self.count
-    def decrement(self):
-        self.count -= 1
-        self.js.document.querySelector(".cartQty").value = self.count
-@app.route('/extraSlum', methods= ['GET','POST'])
+
+
+
+
+
+@app.route('/extraSlum', methods=['GET', 'POST'])
 def layla():
     create_l_form = CreateLaylaForm(request.form)
     if request.method == 'POST':
@@ -105,9 +163,9 @@ def layla():
             carts_list = []
             for key in carts_dict:
                 cart = carts_dict.get(key)
-                if len(carts_list) >0 :
+                if len(carts_list) > 0:
                     carts_list.pop(0)
-                carts_list.insert(0,cart)
+                carts_list.insert(0, cart)
             print('layla')
             return render_template('cart.html', carts_list=carts_list)
         elif request.form.get('clr1') == 'Remove ES':
@@ -119,13 +177,15 @@ def layla():
             carts_list = []
             for key in carts_dict:
                 cart = carts_dict.get(key)
-                if len(carts_list) >0 :
+                if len(carts_list) > 0:
                     carts_list.remove(cart[0])
             db.close()
             print('clear layla')
             return render_template('cart.html', carts_list=carts_list)
     return render_template('createCustomer.html', form=create_l_form)
-@app.route('/sweetDreams', methods= ['GET','POST'])
+
+
+@app.route('/sweetDreams', methods=['GET', 'POST'])
 def xiao():
     create_customer_form = CreateCustomerForm(request.form)
     if request.method == 'POST':
@@ -147,13 +207,15 @@ def xiao():
             cbrts_list = []
             for key in cbrts_dict:
                 cbrt = cbrts_dict.get(key)
-                if len(cbrts_list) >0 :
+                if len(cbrts_list) > 0:
                     cbrts_list.pop(0)
-                cbrts_list.insert(0,cbrt)
+                cbrts_list.insert(0, cbrt)
             print('xiao')
             return render_template('cart.html', cbrts_list=cbrts_list)
     return render_template('createCustomer.html', form=create_customer_form)
-@app.route('/kamisatoClan', methods= ['GET','POST'])
+
+
+@app.route('/kamisatoClan', methods=['GET', 'POST'])
 def ayato():
     create_a_form = CreateAyatoForm(request.form)
     if request.method == 'POST':
@@ -175,13 +237,15 @@ def ayato():
             ccrts_list = []
             for key in ccrts_dict:
                 ccrt = ccrts_dict.get(key)
-                if len(ccrts_list) >0 :
+                if len(ccrts_list) > 0:
                     ccrts_list.pop(0)
-                ccrts_list.insert(0,ccrt)
+                ccrts_list.insert(0, ccrt)
             print('ayato')
             return render_template('cart.html', ccrts_list=ccrts_list)
     return render_template('createCustomer.html', form=create_a_form)
-@app.route('/ningGuang', methods= ['GET','POST'])
+
+
+@app.route('/ningGuang', methods=['GET', 'POST'])
 def beidou():
     create_b_form = CreateBeidouForm(request.form)
     if request.method == 'POST':
@@ -203,15 +267,19 @@ def beidou():
             cdrts_list = []
             for key in cdrts_dict:
                 cdrt = cdrts_dict.get(key)
-                if len(cdrts_list) >0 :
+                if len(cdrts_list) > 0:
                     cdrts_list.pop(0)
-                cdrts_list.insert(0,cdrt)
+                cdrts_list.insert(0, cdrt)
             print('i love beidou :>')
             return render_template('cart.html', cdrts_list=cdrts_list)
     return render_template('createCustomer.html', form=create_b_form)
+
+
 @app.route('/createCustomer', methods=['GET', 'POST'])
 def menu():
     return render_template('createCustomer.html')
+
+
 @app.route('/createUser', methods=['GET', 'POST'])
 def create_user():
     create_user_form = CreateUserForm(request.form)
@@ -222,12 +290,17 @@ def create_user():
             users_dict = db['Users']
         except:
             print("Error in retrieving Users from user.db.")
-        user = User.User(create_user_form.first_name.data, create_user_form.last_name.data, create_user_form.gender.data, create_user_form.email.data,create_user_form.password.data, create_user_form.birthday.data, create_user_form.address.data, create_user_form.payment_method.data, create_user_form.credit_number.data, create_user_form.exp_number.data, create_user_form.remarks.data,   create_user_form.cvc.data)
+        user = User.User(create_user_form.first_name.data, create_user_form.last_name.data,
+                         create_user_form.gender.data, create_user_form.email.data, create_user_form.password.data,
+                         create_user_form.birthday.data, create_user_form.address.data,
+                         create_user_form.payment_method.data, create_user_form.credit_number.data,
+                         create_user_form.exp_number.data, create_user_form.remarks.data, create_user_form.cvc.data)
         users_dict[user.get_user_id()] = user
         db['Users'] = users_dict
         db.close()
         return redirect(url_for('retrieve_users'))
     return render_template('createUser.html', form=create_user_form)
+
 
 @app.route('/retrieveUsers')
 def retrieve_users():
@@ -240,6 +313,7 @@ def retrieve_users():
         user = users_dict.get(key)
         users_list.append(user)
     return render_template('retrieveUsers.html', count=len(users_list), users_list=users_list)
+
 
 @app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
 def update_user(id):
@@ -279,6 +353,8 @@ def update_user(id):
         update_user_form.exp_number.data = user.get_exp_number()
         update_user_form.remarks.data = user.get_remarks()
         return render_template('updateUser.html', form=update_user_form)
+
+
 @app.route('/deleteUser/<int:id>', methods=['POST'])
 def delete_user(id):
     users_dict = {}
@@ -288,6 +364,7 @@ def delete_user(id):
     db['Users'] = users_dict
     db.close()
     return redirect(url_for('retrieve_users'))
+
 
 if __name__ == '__main__':
     app.run()
