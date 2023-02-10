@@ -13,12 +13,17 @@ class CreateUserForm(Form):
     exp_number = TelField('Expiry', [validators.Length(min=4, max=4), validators.DataRequired()])
     remarks = TextAreaField('Remarks', [validators.Optional()])
     password = StringField('Password', [validators.Length(min=5, max=10), validators.DataRequired()])
-class CreateCustomerForm(Form):
-    sdp = 11.50
-    sdq = 0
 class CreateLaylaForm(Form):
     esp = 18.50
     esq = 0
+class CreateCustomerForm(Form):
+    esp = 18.50
+    esq = 0
+    sdp = 11.50
+    sdq = 57
+class CreateXiaoForm(Form):
+    sdp = 11.50
+    sdq = 57
 class CreateAyatoForm(Form):
     qep = 37.00
     qeq = 0

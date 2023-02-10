@@ -32,6 +32,8 @@ class Cart:
         return self.__esq
     def set_cart_id(self, cart_id):
         self.__cart_id = cart_id
+    def update_cart_id(self):
+        self.__cart_id = Cart.count_id
     def set_esp(self,esp):
         self.__esp = esp
     def set_esq(self,esq):
@@ -110,3 +112,8 @@ class Cdrt:
     def set_bdq(self,bdq):
         self.__bdq = bdq
 
+class Roytut:
+    p1 = {'code':1, 'name': 'Extravagant Slumber', 'image':'/static/ess.png', 'price':18.50}
+    p2 = {'code':2, 'name': 'Sweet Dreams', 'image':'/static/sd.png', 'price':11.50}
+    p3 = {'code':3, 'name': 'Quiet Elegance', 'image':'/static/qe.png', 'price':37.00}
+    p4 = {'code':4, 'name': 'Flash-Fried-Fillet', 'image':'/static/fff.png', 'price':7.40}
