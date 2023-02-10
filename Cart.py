@@ -34,20 +34,4 @@ class Cart:
         self.__amt = amt
 
 
-es = {'name':'Extravagant Slumber','price':18.50, 'qty':1}
-total = []
-def increase():
-    if es['qty'] == 1:
-        total.append(es)
-        es['qty'] += 1
-    elif es['qty'] > 1:
-        es['price'] = float(es['price'] * es['qty'])
-        return es['qty']
-def decrease():
-    if es['qty'] > 0:
-        es['qty'] -= 1
-        es['price'] = float(es['price'] * es['qty'])
-        return es['qty']
-    elif es['qty'] == 0:
-        total.pop(es)
 
