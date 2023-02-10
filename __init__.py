@@ -125,6 +125,9 @@ def logged():
         return render_template('retrieveGuest.html', user=session['user'])
     return redirect(url_for('home'))
 
+@app.route('/Payment')
+def payment():
+    return redirect('Payment.html')
 
 @app.before_request
 def bfr_rq():
