@@ -9,35 +9,82 @@ app.secret_key = 'yippee'
 
 @app.route('/')
 def fhome():
-    welcome_mes = ""
+    welcome_mes = "Guest Login"
     try:
-        user_dict = {}
+        users_dict = {}
         db = shelve.open('users.db', 'r')
         users_dict = db['Users']
-        currentcheck = User.get_curr()
+
         for key in users_dict:
             user = users_dict[key]
-            if currentcheck == 1:
+            if user.get_curr() == 1:
                 user = user.get_first_name()
                 welcome_mes = "Welcome Back, "+user
+        db.close()
 
-            db.close()
+
         return render_template('home.html', welcome_mes = welcome_mes)
-    except:
+    except FileNotFoundError:
         user_dict = {}
         db = shelve.open('users.db', 'c')
-        welcome_mes = "Guest Login"
+        welcome_mes = 'File not found'
+
         db.close()
+
         return render_template('home.html', welcome_mes = welcome_mes)
+    except PermissionError:
+        user_dict = {}
+        db = shelve.open('users.db', 'c')
+        welcome_mes = 'Permisson error'
+
+        db.close()
+
+        return render_template('home.html', welcome_mes = welcome_mes)
+    except KeyError:
+        user_dict = {}
+        db = shelve.open('users.db', 'c')
+        welcome_mes = 'Key Error'
+
+        db.close()
+
+        return render_template('home.html', welcome_mes = welcome_mes)
+    except AttributeError:
+        user_dict = {}
+        db = shelve.open('users.db', 'c')
+        welcome_mes = 'Attribute Error'
+
+        db.close()
+
+        return render_template('home.html', welcome_mes = welcome_mes)
+    except TypeError:
+        user_dict = {}
+        db = shelve.open('users.db', 'c')
+        welcome_mes = 'Type Error'
+
+        db.close()
+
+        return render_template('home.html', welcome_mes = welcome_mes)
+    except EOFError:
+        user_dict = {}
+        db = shelve.open('users.db', 'c')
+        welcome_mes = 'End of File error'
+
+        db.close()
+
+        return render_template('home.html', welcome_mes = welcome_mes)
+
+
+
 
 @app.route('/home')
 def home():
-    welcome_mes = ""
+    welcome_mes = "failed"
     try:
         user_dict = {}
         db = shelve.open('users.db', 'r')
         users_dict = db['Users']
-        for key in users_dict:
+        welcome_mes = "tried"
+        for key in user_dict:
             user = users_dict[key]
             if user.get_curr() == 1:
                 user = user.get_first_name()
@@ -49,7 +96,7 @@ def home():
     except:
         user_dict = {}
         db = shelve.open('users.db', 'c')
-        welcome_mes = "Guest Login"
+
         db.close()
 
         return render_template('home.html', welcome_mes = welcome_mes)
