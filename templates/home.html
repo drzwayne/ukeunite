@@ -6,12 +6,9 @@
 {% block title %}Big Deal{% endblock %}
 {% block content %}
 {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
+{% if welcome_mes %}
+  <div class="welcome_mes">{{ welcome_mes }}</div>
+
   {% endif %}
 {% endwith %}
 <script>
