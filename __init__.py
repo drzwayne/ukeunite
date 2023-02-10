@@ -11,12 +11,12 @@ app.secret_key = 'yippee'
 def fhome():
     welcome_mes = "Guest Login"
     try:
-        users_dict = {}
-        db = shelve.open('users.db', 'r')
-        users_dict = db['Users']
+        user_dict = {}
+        db = shelve.open('user.db', 'r')
+        user_dict = db['Users']
 
-        for key in users_dict:
-            user = users_dict[key]
+        for key in user_dict:
+            user = user_dict[key]
             if user.get_curr() == 1:
                 user = user.get_first_name()
                 welcome_mes = "Welcome Back, "+user
@@ -26,7 +26,7 @@ def fhome():
         return render_template('home.html', welcome_mes = welcome_mes)
     except FileNotFoundError:
         user_dict = {}
-        db = shelve.open('users.db', 'c')
+        db = shelve.open('user.db', 'c')
         welcome_mes = 'File not found'
 
         db.close()
@@ -34,7 +34,7 @@ def fhome():
         return render_template('home.html', welcome_mes = welcome_mes)
     except PermissionError:
         user_dict = {}
-        db = shelve.open('users.db', 'c')
+        db = shelve.open('user.db', 'c')
         welcome_mes = 'Permisson error'
 
         db.close()
@@ -42,7 +42,7 @@ def fhome():
         return render_template('home.html', welcome_mes = welcome_mes)
     except KeyError:
         user_dict = {}
-        db = shelve.open('users.db', 'c')
+        db = shelve.open('user.db', 'c')
         welcome_mes = 'Key Error'
 
         db.close()
@@ -50,7 +50,7 @@ def fhome():
         return render_template('home.html', welcome_mes = welcome_mes)
     except AttributeError:
         user_dict = {}
-        db = shelve.open('users.db', 'c')
+        db = shelve.open('user.db', 'c')
         welcome_mes = 'Attribute Error'
 
         db.close()
@@ -58,7 +58,7 @@ def fhome():
         return render_template('home.html', welcome_mes = welcome_mes)
     except TypeError:
         user_dict = {}
-        db = shelve.open('users.db', 'c')
+        db = shelve.open('user.db', 'c')
         welcome_mes = 'Type Error'
 
         db.close()
@@ -66,7 +66,7 @@ def fhome():
         return render_template('home.html', welcome_mes = welcome_mes)
     except EOFError:
         user_dict = {}
-        db = shelve.open('users.db', 'c')
+        db = shelve.open('user.db', 'c')
         welcome_mes = 'End of File error'
 
         db.close()
