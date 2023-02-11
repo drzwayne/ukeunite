@@ -16,20 +16,24 @@ class CreateUserForm(Form):
 class CreateLaylaForm(Form):
     esp = 18.50
     esq = 0
-class CreateCustomerForm(Form):
-    esp = 18.50
-    esq = 0
-    sdp = 11.50
-    sdq = 57
 class CreateXiaoForm(Form):
     sdp = 11.50
-    sdq = 57
+    sdq = 0
 class CreateAyatoForm(Form):
     qep = 37.00
     qeq = 0
 class CreateBeidouForm(Form):
     bdp = 7.40
     bdq = 0
+class CreateCustomerForm(Form):
+    tp1 = 18.50
+    tq1 = 0
+    tp2 = 11.50
+    tq2 = 0
+    tp3 = 37.00
+    tq3 = 0
+    tp4 = 7.40
+    tq4 = 0
 class CreateMemberForm(Form):
     first_name = StringField('First Name', [validators.Length(min=1, max=150), validators.DataRequired()])
     last_name = StringField('Last Name', [validators.Length(min=1, max=150), validators.DataRequired()])

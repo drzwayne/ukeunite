@@ -117,3 +117,30 @@ class Roytut:
     p2 = {'code':2, 'name': 'Sweet Dreams', 'image':'/static/sd.png', 'price':11.50}
     p3 = {'code':3, 'name': 'Quiet Elegance', 'image':'/static/qe.png', 'price':37.00}
     p4 = {'code':4, 'name': 'Flash-Fried-Fillet', 'image':'/static/fff.png', 'price':7.40}
+
+class Subtotalprice:
+    subtotal_count = 0
+    def __init__(self):
+        Subtotalprice.subtotal_count += 1
+        self.__subtotalcount = Subtotalprice.subtotal_count
+    def get_subtotalcount(self):
+        return self.__subtotalcount
+    def set_subtotalcount(self, subtotalcount):
+        self.__subtotalcount = subtotalcount
+    def get_tproduct1(self):
+        return self.__tproduct1
+    def set_tproduct1(self):
+        self.__tproduct1 = 18.5 * self.__subtotalcount
+    def get_tproduct2(self):
+        return self.__tproduct2
+    def set_tproduct2(self):
+        self.__tproduct2 = 11.5 * self.__subtotalcount
+    def get_tproduct3(self):
+        return self.__tproduct3
+    def set_tproduct3(self):
+        self.__tproduct3 = 37 * self.__subtotalcount
+    def get_tproduct4(self):
+        return self.__tproduct4
+    def set_tproduct4(self):
+        self.__tproduct4 = 7.4 * self.__subtotalcount
+

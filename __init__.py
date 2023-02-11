@@ -124,6 +124,50 @@ def logged():
         return render_template('retrieveGuest.html', user=session['user'])
     return redirect(url_for('home'))
 
+@app.route('/payment')
+def paymentpage():
+    carts_dict = {}
+    db = shelve.open('cart.db', 'r')
+    carts_dict = db['Carts']
+    db.close()
+    carts_list = []
+    for key in carts_dict:
+        cart = carts_dict.get(key)
+        if len(carts_list) >0 :
+            carts_list.pop(0)
+        carts_list.insert(0,cart)
+    cbrts_dict = {}
+    db = shelve.open('cbrt.db', 'r')
+    cbrts_dict = db['Cbrts']
+    db.close()
+    cbrts_list = []
+    for key in cbrts_dict:
+        cbrt = cbrts_dict.get(key)
+        if len(cbrts_list) >0 :
+            cbrts_list.pop(0)
+        cbrts_list.insert(0,cbrt)
+    ccrts_dict = {}
+    db = shelve.open('ccrt.db', 'r')
+    ccrts_dict = db['Ccrts']
+    db.close()
+    ccrts_list = []
+    for key in ccrts_dict:
+        ccrt = ccrts_dict.get(key)
+        if len(ccrts_list) > 0:
+            ccrts_list.pop(0)
+        ccrts_list.insert(0, ccrt)
+    cdrts_dict = {}
+    db = shelve.open('cdrt.db', 'r')
+    cdrts_dict = db['Cdrts']
+    db.close()
+    cdrts_list = []
+    for key in cdrts_dict:
+        cdrt = cdrts_dict.get(key)
+        if len(cdrts_list) > 0:
+            cdrts_list.pop(0)
+        cdrts_list.insert(0, cdrt)
+    print('fail')
+    return render_template('payment.html', carts_list=carts_list, cbrts_list=cbrts_list, ccrts_list=ccrts_list, cdrts_list=cdrts_list)
 
 @app.before_request
 def bfr_rq():
@@ -218,16 +262,6 @@ def cartpage():
             if len(carts_list) >0 :
                 carts_list.pop(0)
             carts_list.insert(0,cart)
-        carts_dict = {}
-        db = shelve.open('cart.db', 'r')
-        carts_dict = db['Carts']
-        db.close()
-        carts_list = []
-        for key in carts_dict:
-            cart = carts_dict.get(key)
-            if len(carts_list) >0:
-                carts_list.pop(0)
-            carts_list.append(cart)
         cbrts_dict = {}
         db = shelve.open('cbrt.db', 'r')
         cbrts_dict = db['Cbrts']
@@ -259,7 +293,16 @@ def cartpage():
                 cdrts_list.pop(0)
             cdrts_list.insert(0, cdrt)
         print('fail')
-        return render_template('cart.html', carts_list=carts_list, cbrts_list=cbrts_list, ccrts_list=ccrts_list, cdrts_list=cdrts_list)
+        users_dict = {}
+        db = shelve.open('user.db', 'r')
+        users_dict = db['Users']
+        db.close()
+        users_list = []
+        for key in users_dict:
+            user = users_dict.get(key)
+            users_list.append(user)
+        print('user success')
+        return render_template('cart.html', carts_list=carts_list, cbrts_list=cbrts_list, ccrts_list=ccrts_list, cdrts_list=cdrts_list, users_list=users_list)
 
 @app.route('/extraSlum', methods=['GET', 'POST'])
 def layla():
@@ -394,7 +437,7 @@ def beidou():
     return render_template('menu.html', form=create_b_form)
 @app.route('/menu',methods=['GET','POST'])
 def menupage():
-    return App.render(render_template('menu.html'))
+    return render_template('menu.html')
 
 @app.route('/add', methods=['POST'])
 def addcart():

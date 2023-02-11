@@ -5,17 +5,16 @@
 <div id="mds" style="display:grid;grid-template-columns:repeat(auto-fit,280px);text-align:center;grid-gap:25px;padding:15px;margin-top:50px">
         <div data-id="m1" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='ess.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
-          <h2 class="msf-name" style="font-size:27px">Extravagant Slumber</h2>
+          <h2 class="msf-name" style="font-size:27px">Rose Custard</h2>
           <h3 class="msf-p">$18.50</h3>
             <form method="POST" action="/extraSlum">
                 <input type="submit" value="Add ES" name="act1" class="btn btn-primary"/>
-                <input type="submit" value="Remove ES" name="clr1" class="btn btn-primary">
-                <input type="text" value="0" disabled="disabled" style="width: 20px" class="count1">
+                <input type="submit" value="Remove ES" name="clr1" class="btn btn-success">
             </form>
         </div>
         <div data-id="m2" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='sd.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
-          <h2 class="msf-name" style="font-size:30px">Sweet Dreams</h2>
+          <h2 class="msf-name" style="font-size:30px">Almond Tofu</h2>
           <h3 class="msf-p">$11.50</h3>
             <form method="POST" action="/sweetDreams">
                 <input type="submit" value="Add SD" name="sd" class="btn btn-primary"/>
@@ -23,7 +22,7 @@
         </div>
         <div data-id="m3" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='qe.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
-          <h2 class="msf-name" style="font-size:30px">Quiet Elegance</h2>
+          <h2 class="msf-name" style="font-size:30px">Sakura Tempura</h2>
           <h3 class="msf-p">$37.00</h3>
             <form method="POST" action="/kamisatoClan">
                 <input type="submit" value="Add QE" name="qe" class="btn btn-primary"/>
@@ -31,7 +30,7 @@
         </div>
         <div data-id="m4" class="msf" style="background-color:grey; border-radius:10px; padding-bottom: 10px">
           <img src="{{ url_for('static',filename='fff.png') }}" class="msf-img" style="height:256px; width:256px; top:10px">
-          <h2 class="msf-name" style="font-size:30px">Flash-Fried-Fillet</h2>
+          <h2 class="msf-name" style="font-size:30px">Stir-Fried Fillet</h2>
           <h3 class="msf-p">$7.40</h3>
             <form method="POST" action="/ningGuang">
                 <input type="submit" value="Add BD" name="bd" class="btn btn-primary"/>

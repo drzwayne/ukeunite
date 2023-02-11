@@ -13,7 +13,6 @@
 {% block content %}
 <h1 class="display-4">Your Orders</h1>
 <div id="shopping-cart">
-    <div class="txt-heading">Shopping Cart</div>
 		{% if 'cart_item' in session %}
 			<a id="btnEmpty" href="{{ url_for('.empty_cart') }}">Empty Cart</a>
 			<table class="tbl-cart" cellpadding="10" cellspacing="1">
@@ -50,7 +49,6 @@
 			</tbody>
 			</table>
 		{% else: %}
-			<div class="no-records">Your Cart is Empty</div>
 		{% endif %}
 </div>
 
@@ -68,7 +66,7 @@
         <tbody>
             <tr>
                 <td><img src="{{ url_for('static',filename='ess.png') }}" class="msf-img" style="height:70px; width:70px"></td>
-                <td>Extravagant Slumber</td>
+                <td>Rose Custard</td>
                 {% for cart in carts_list %}
                     <td>{{ cart.get_cart_id() }}</td>
                     <td>$ {{ cart.get_cart_id() * cart.get_esp() }}</td>
@@ -76,7 +74,7 @@
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='sd.png') }}" class="msf-img" style="height:70px; width:70px"></td>
-                <td>Sweet Dreams</td>
+                <td>Almond Tofu</td>
                 {% for cbrt in cbrts_list %}
                     <td>{{ cbrt.get_cbrt_id() }}</td>
                     <td>$ {{ cbrt.get_cbrt_id() * cbrt.get_sdp() }} </td>
@@ -84,7 +82,7 @@
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='qe.png') }}" class="msf-img" style="height:70px; width:70px"></td>
-                <td>Quiet Elegance</td>
+                <td>Sakura Tempura</td>
                 {% for ccrt in ccrts_list %}
                     <td>{{ ccrt.get_ccrt_id() }}</td>
                     <td>$ {{ ccrt.get_ccrt_id() * ccrt.get_qep() }} </td>
@@ -92,7 +90,7 @@
             </tr>
             <tr>
                 <td><img src="{{ url_for('static',filename='fff.png') }}" class="msf-img" style="height:70px; width:70px"></td>
-                <td>Flash-Fried-Fillet</td>
+                <td>Stir-Fried Fillet</td>
                 {% for cdrt in cdrts_list %}
                     <td>{{ cdrt.get_cdrt_id() }}</td>
                     <td>$ {{ cdrt.get_cdrt_id() * cdrt.get_bdp() }} </td>
@@ -104,10 +102,11 @@
     <table class="table table-striped" style="width:500px; margin-left:50px; border:3px solid black" >
         <thead>
             <tr>
-                <th rowspan="4" style="text-align:center"> Your Order(s)</th>
+                <th colspan="5" style="text-align:center">Payment Credentials</th>
             </tr>
         </thead>
         <tbody>
+        <!--
             <tr>
                 <td colspan="2"><div class="alert alert-info">
                     <strong>Extravagant Slumber</strong><span style="margin-left:100px">$18.50</span><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
@@ -124,14 +123,27 @@
             <tr><td colspan="2"><div class="alert alert-info">
                     <strong>Flash-Fried-Fillet</strong><span style="margin-left:130px">$7.40</span><span style="float:right" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                 </div></td>
+            </tr>-->
+            {% for user in users_list %}
+            <tr>
+                <td colspan="2">Delivery Address: </td>
+                <td colspan="3"> {{ user.get_address() }} </td>
             </tr>
-            <tr><td>Subtotal</td>
-                <td>{% for cart in carts_list %}{% for cbrt in cbrts_list %}{% for ccrt in ccrts_list %}{% for cdrt in cdrts_list %}
-                    <td>$ {{ cart.get_cart_id() * cart.get_esp() }}+{{cbrt.get_cbrt_id() * cbrt.get_sdp() }}+{{ccrt.get_ccrt_id() * ccrt.get_qep() }} + {{cdrt.get_cdrt_id() * cdrt.get_bdp() }} </td>
-                {% endfor %}{% endfor %}{% endfor %}{% endfor %}
-                </td>
+            <tr>
+                <td colspan="2">Payment Method: </td>
+                <td colspan="3">{{ user.get_payment_method() }}</td>
             </tr>
-            <tr><td colspan="5" style="align:center"><input type="submit" value="Pay" onclick="payment.html" class="btn btn-primary" style="width:350px"/></td></tr>
+            <tr>
+                <td colspan="2">Credit Number: </td>
+                <td colspan="3">{{ user.get_credit_number() }}</td>
+            </tr>
+            {% endfor %}
+            <tr><td colspan="2">Subtotal</td>
+                {% for subt in sub_list %}
+                    <td colspan="3">$ {{ subtotal.get_subtotalcount() }} </td>
+                {% endfor %}
+            </tr>
+            <tr><td colspan="5" style="margin: 0 auto"><a href="/payment" class="btn btn-info" style="width: 500px">Pay</a></td></tr>
         </tbody>
     </table>
 </div>
