@@ -1,177 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Payment{% endblock %}
 {% block content %}
-{% from "includes/_formHelper.html" import render_field %}
-<h1 class="display-4">Payment</h1>
-<form method="POST" action="">
-  <label>$ 88</label>
-  {% for user in users_list %}
-    {{ user.get_first_name() }}
-    {{ user.get_address() }}
-    {{ user.get_payment_method() }}
-    {{ user.get_credit_number() }}
-    {{ user.get_exp_number() }}
-    {{ user.get_remarks() }}
-  {% endfor %}
-  <input type="submit" value="Confirm Payment" class="btn btn-primary"/>
-</form>
+  <h2>Payment</h2>
+  <form action="{{ url_for('payment') }}" method="post">
+    <div>
+      <label for="card_number">Card Number:</label>
+      <input type="text" name="card_number" id="card_number">
+    </div>
+    <div>
+      <label for="card_holder">Card Holder Name:</label>
+      <input type="text" name="card_holder" id="card_holder">
+    </div>
+    <div>
+      <label for="expiry_date">Expiry Date:</label>
+      <input type="text" name="expiry_date" id="expiry_date">
+    </div>
+    <div>
+      <label for="cvv">CVV:</label>
+      <input type="text" name="cvv" id="cvv">
+    </div>
+    <input type="submit" value="Pay">
+  </form>
 {% endblock %}
-<!--
-
-@app.route('/json')
-def get_json():
-    return jsonify('home.html')
-@app.route('/home', methods=['POST'])
-def cart():
-    return App(render_template('home.html'))
-
-@app.route('/cart')
-def retrieve_items():
-    items_dict = {}
-    db = shelve.open('item.db', 'r')
-    items_dict = items_dict
-    db.close()
-    items_list = []
-    for key in items_dict:
-        item = items_dict.get(key)
-        items_list.append(item)
-    return render_template('cart.html', count=len(items_list), items_list=items_list)
-@jsf.use(app)
-class App:
-    def __init__(self):
-        self.count = 0
-        self.escount = 0
-        self.sdcount = 0
-        self.qecount = 0
-        self.fffcount = 0
-        self.cart = 0
-        self.total = 0
-        self.total2 = 0
-        self.total3 = 0
-        self.total4 = 0
-        self.c1 = self.escount
-        self.cart = self.total
-        escounts_dict = {}
-        db = shelve.open('escount.db','c')
-        try:
-            escounts_dict = db['Escounts']
-        except:
-            print("Error in retrieving number of items from escount.db.")
-        db['Escounts'] = escounts_dict
-        db.close()
-        escounts_dict = {}
-        db = shelve.open('escount.db', 'r')
-        escounts_dict = db['Escounts']
-        db.close()
-        escounts_list = []
-        for key in escounts_dict:
-            escount = escounts_dict.get(key)
-            escounts_list.append(escount)
-        self.b1 = []
-        self.m1 = {'fn':'ES','price':18.50, 'qty':0}
-    def esadd(self):
-        self.escount += 1
-        self.js.document.querySelector('.es').value = self.escount
-        self.m1['qty'] = self.escount
-        if self.escount >= 0:
-            self.b1.pop(self.m1)
-        self.b1.push(self.m1)
-        self.js.document.querySelector('.cartQty').value= self.js.document.querySelector('.cartQty').value + 1
-        ts_dict = {}
-        db = shelve.open('t.db','c')
-        try:
-            ts_dict = db['Ts']
-        except:
-            print("Error in retrieving number of items from t.db.")
-        ts_dict = self.total[self.m1]
-        db['Ts'] = ts_dict
-        db.close()
-        self.js.document.querySelector('.tp1').value = (self.cart['qty']*18.5).toFixed(2)
-        self.js.document.querySelector('.mtp').value = (self.js.document.querySelector('.mtp').value+18.5).toFixed(2)
-    def get(self):
-        self.cart = self.total
-        ts_dict = {}
-        db = shelve.open('t.db', 'r')
-        ts_dict = db['Ts']
-        db.close()
-        ts_list = []
-        for key in ts_dict:
-            t = ts_dict.get(key)
-            ts_list.append(t)
-        self.js.document.querySelector('.tp1').value= (self.cart['qty']*18.5).toFixed(2)
-        self.js.document.querySelector('.mtp').value= (self.js.document.querySelector('.mtp').value+self.cart['qty']*18.5).toFixed(2)
-
-    def esminus(self):
-        if self.escount > 0:
-            self.escount -= 1
-        else:
-            pass
-        self.js.document.querySelector('.es').value = self.escount
-    def increment(self):
-        self.count += 1
-        self.js.document.querySelector('.cartQty').value = self.count
-        orders_dict = {}
-        db = shelve.open('order.db','c')
-        try:
-            orders_dict = db['Orders']
-        except:
-            print("Error in retrieving number of items from order.db.")
-        order = {'fn':'Extravagant Slumber', 'price':18.50, 'qty':0}
-        orders_dict = order
-        db['Orders'] = orders_dict
-        db.close()
-        orders_dict = {}
-        db = shelve.open('order.db', 'r')
-        orders_dict = db['Orders']
-        db.close()
-        qtys_dict ={}
-        db = shelve.open('qty.db', 'c')
-        qtys_list = []
-        for key in qtys_dict:
-            qty = qtys_dict.get(key)
-            qtys_list.append(qty)
-        qtys_dict ={}
-        db = shelve.open('qty.db','c')
-        try:
-            qtys_dict = db['Qtys']
-        except:
-            print('Error in retrieving count')
-        qty = self.count
-        qtys_dict = qty
-        db['Qtys'] = qtys_dict
-        self.js.document.querySelector('.cartQty').value = self.count
-        db.close()
-        qtys_dict = {}
-        db = shelve.open('qty.db', 'r')
-        qtys_dict = db['Qtys']
-        db.close()
-        qtys_list = []
-        for key in qtys_dict:
-            qty = qtys_dict.get(key)
-            qtys_list.append(qty)
-    def decrement(self):
-        if self.count > 0:
-            self.count -= 1
-        else:
-            pass
-        self.js.document.querySelector('.cartQty').value = self.count
-        qtys_dict ={}
-        db = shelve.open('qty.db','w')
-        try:
-            qtys_dict = db['Qtys']
-        except:
-            print('Error in retrieving count')
-        qty = self.count
-        qtys_dict = qty
-        db['Qtys'] = qtys_dict
-        self.js.document.querySelector('.cartQty').value = self.count
-        db.close()
-        qtys_dict = {}
-        db = shelve.open('qty.db', 'r')
-        qtys_dict = db['Qtys']
-        db.close()
-        qtys_list = []
-        for key in qtys_dict:
-            qty = qtys_dict.get(key)
-            qtys_list.append(qty)
- -->
