@@ -335,10 +335,6 @@ def cartpage():
             user = users_dict.get(key)
             users_list.append(user)
         print('user success')
-        #carts_dict = {}
-        #db = shelve.open('cart.db', 'r')
-        #carts_dict = db['Carts']
-        #db.close()
         total_dict = {}
         db = shelve.open('total.db','r')
         total_dict = db['Total']
@@ -418,7 +414,7 @@ def layla():
                 print('es:',total)
             print('es:',math.fsum(total_list))
             return render_template('menu.html', carts_list=carts_list, total_list=total_list)
-        elif request.form.get('clr1') == 'Remove ES':
+        elif request.form.get('clr1') == 'Clear ES':
             os.remove('cart.db.bak')
             os.remove('cart.db.dat')
             os.remove('cart.db.dir')
@@ -444,7 +440,28 @@ def layla():
                     carts_list.pop(0)
                 carts_list.insert(0, cart)
             print('clear layla')
-            return render_template('menu.html', carts_list=carts_list)
+            os.remove('total.db.bak')
+            os.remove('total.db.dat')
+            os.remove('total.db.dir')
+            total_dict = {}
+            db = shelve.open('total.db', 'c')
+            try:
+                total_dict = db['Total']
+            except:
+                print("Error in retrieving Total from total.db.")
+            total_dict = {'p1': 18.5 * cart.get_cart_id()}
+            db['Total'] = total_dict
+            db.close()
+            total_dict = {}
+            db = shelve.open('total.db','r')
+            total_dict = db['Total']
+            total_list = []
+            for key in total_dict:
+                total = total_dict.get(key)
+                total_list.append(total)
+                print('removees:',total)
+            print('res:',math.fsum(total_list))
+            return render_template('menu.html', carts_list=carts_list, total_list=total_list)
     return render_template('menu.html', form=create_l_form)
 
 
@@ -459,6 +476,7 @@ def xiao():
         except:
             print("Error in retrieving Cbrts from cbrt.db.")
         cbrt = Customer.Cbrt(create_x_form.sdp, create_x_form.sdq)
+        cbrt.incqtyb()
         cbrts_dict[cbrt.get_cbrt_id()] = cbrt
         db['Cbrts'] = cbrts_dict
         db.close()
@@ -491,6 +509,51 @@ def xiao():
                 t2 = t2_dict.get(key)
                 t2_list.append(t2)
             return render_template('menu.html', cbrts_list=cbrts_list, t2_list=t2_list)
+        elif request.form.get('clr2') == 'Clear SD':
+            os.remove('cbrt.db.bak')
+            os.remove('cbrt.db.dat')
+            os.remove('cbrt.db.dir')
+            cbrts_dict = {}
+            db = shelve.open('cbrt.db', 'c')
+            try:
+                cbrts_dict = db['Cbrts']
+            except:
+                print("Error in retrieving Cbrts from cbrt.db.")
+            cbrt = Customer.Cbrt(create_x_form.sdp, create_x_form.sdq)
+            cbrt.decqtyb()
+            cbrts_dict[cbrt.get_cbrt_id()] = cbrt
+            db['Cbrts'] = cbrts_dict
+            db.close()
+            cbrts_dict = {}
+            db = shelve.open('cbrt.db', 'r')
+            cbrts_dict = db['Cbrts']
+            db.close()
+            cbrts_list = []
+            for key in cbrts_dict:
+                cbrt = cbrts_dict.get(key)
+                if len(cbrts_list) > 0:
+                    cbrts_list.pop(0)
+                cbrts_list.insert(0, cbrt)
+            os.remove('two.db.bak')
+            os.remove('two.db.dat')
+            os.remove('two.db.dir')
+            t2_dict = {}
+            db = shelve.open('two.db', 'c')
+            try:
+                t2_dict = db['Two']
+            except:
+                print("Error in retrieving T2 from two.db.")
+            t2_dict = {'p2':11.5 * cbrt.get_cbrt_id()}
+            db['Two'] = t2_dict
+            db.close()
+            t2_dict = {}
+            db = shelve.open('two.db','r')
+            t2_dict = db['Two']
+            t2_list = []
+            for key in t2_dict:
+                t2 = t2_dict.get(key)
+                t2_list.append(t2)
+            return render_template('menu.html', cbrts_list=cbrts_list, t2_list=t2_list)
     return render_template('menu.html', form=create_x_form)
 
 @app.route('/kamisatoClan', methods=['GET', 'POST'])
@@ -504,6 +567,7 @@ def ayato():
         except:
             print("Error in retrieving Ccrts from ccrt.db.")
         ccrt = Customer.Ccrt(create_a_form.qep, create_a_form.qeq)
+        ccrt.incqtyc()
         ccrts_dict[ccrt.get_ccrt_id()] = ccrt
         db['Ccrts'] = ccrts_dict
         db.close()
@@ -536,6 +600,51 @@ def ayato():
                 t3 = t3_dict.get(key)
                 t3_list.append(t3)
             return render_template('menu.html', ccrts_list=ccrts_list, t3_list=t3_list)
+        elif request.form.get('clr3') == 'Clear QE':
+            os.remove('ccrt.db.bak')
+            os.remove('ccrt.db.dat')
+            os.remove('ccrt.db.dir')
+            ccrts_dict = {}
+            db = shelve.open('ccrt.db', 'c')
+            try:
+                ccrts_dict = db['Ccrts']
+            except:
+                print("Error in retrieving Ccrts from ccrt.db.")
+            ccrt = Customer.Ccrt(create_a_form.qep, create_a_form.qeq)
+            ccrt.decqtyc()
+            ccrts_dict[ccrt.get_ccrt_id()] = ccrt
+            db['Ccrts'] = ccrts_dict
+            db.close()
+            ccrts_dict = {}
+            db = shelve.open('ccrt.db', 'r')
+            ccrts_dict = db['Ccrts']
+            db.close()
+            ccrts_list = []
+            for key in ccrts_dict:
+                ccrt = ccrts_dict.get(key)
+                if len(ccrts_list) > 0:
+                    ccrts_list.pop(0)
+                ccrts_list.insert(0, ccrt)
+            os.remove('tree.db.bak')
+            os.remove('tree.db.dat')
+            os.remove('tree.db.dir')
+            t3_dict = {}
+            db = shelve.open('tree.db', 'c')
+            try:
+                t3_dict = db['Tree']
+            except:
+                print("Error in retrieving T3 from tree.db.")
+            t3_dict = {'p3':37 * ccrt.get_ccrt_id()}
+            db['Tree'] = t3_dict
+            db.close()
+            t3_dict = {}
+            db = shelve.open('tree.db','r')
+            t3_dict = db['Tree']
+            t3_list = []
+            for key in t3_dict:
+                t3 = t3_dict.get(key)
+                t3_list.append(t3)
+            return render_template('menu.html', ccrts_list=ccrts_list, t3_list=t3_list)
     return render_template('menu.html', form=create_a_form)
 
 
@@ -550,6 +659,7 @@ def beidou():
         except:
             print("Error in retrieving Cdrts from cdrt.db.")
         cdrt = Customer.Cdrt(create_b_form.bdp, create_b_form.bdq)
+        cdrt.incqtyd()
         cdrts_dict[cdrt.get_cdrt_id()] = cdrt
         db['Cdrts'] = cdrts_dict
         db.close()
@@ -574,6 +684,51 @@ def beidou():
                     cdrts_list.pop(0)
                 cdrts_list.insert(0, cdrt)
             print('i love beidou :>')
+            t4_dict = {}
+            db = shelve.open('four.db','r')
+            t4_dict = db['Four']
+            t4_list = []
+            for key in t4_dict:
+                t4 = t4_dict.get(key)
+                t4_list.append(t4)
+            return render_template('menu.html', cdrts_list=cdrts_list, t4_list=t4_list)
+        elif request.form.get('clr4') == 'Clear BD':
+            os.remove('cdrt.db.bak')
+            os.remove('cdrt.db.dat')
+            os.remove('cdrt.db.dir')
+            cdrts_dict = {}
+            db = shelve.open('cdrt.db', 'c')
+            try:
+                cdrts_dict = db['Cdrts']
+            except:
+                print("Error in retrieving Cdrts from cdrt.db.")
+            cdrt = Customer.Cdrt(create_b_form.bdp, create_b_form.bdq)
+            cdrt.decqtyd()
+            cdrts_dict[cdrt.get_cdrt_id()] = cdrt
+            db['Cdrts'] = cdrts_dict
+            db.close()
+            cdrts_dict = {}
+            db = shelve.open('cdrt.db', 'r')
+            cdrts_dict = db['Cdrts']
+            db.close()
+            cdrts_list = []
+            for key in cdrts_dict:
+                cdrt = cdrts_dict.get(key)
+                if len(cdrts_list) > 0:
+                    cdrts_list.pop(0)
+                cdrts_list.insert(0, cdrt)
+            os.remove('four.db.bak')
+            os.remove('four.db.dat')
+            os.remove('four.db.dir')
+            t4_dict = {}
+            db = shelve.open('four.db', 'c')
+            try:
+                t4_dict = db['Four']
+            except:
+                print("Error in retrieving T4 from four.db.")
+            t4_dict = {'p4':7.4 * cdrt.get_cdrt_id()}
+            db['Four'] = t4_dict
+            db.close()
             t4_dict = {}
             db = shelve.open('four.db','r')
             t4_dict = db['Four']

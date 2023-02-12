@@ -18,9 +18,7 @@ class Cart:
     esp = 18.50
     esq = 1
     count_id = 0
-    button1 = 0
     def __init__(self, esp, esq):
-        #Cart.count_id += 1
         self.__cart_id = Cart.count_id
         self.__esp = esp
         self.__esq = esq
@@ -44,11 +42,6 @@ class Cart:
     def incqty(self):
         Cart.count_id += 1
         self.__cart_id = Cart.count_id
-class Mart(Cart):
-    def __init__(self,esp, esq):
-        super().__init__(esp, esq)
-        Cart.count_id -= 1
-        self.__cart_id = Cart.count_id
 
 
 class Cbrt:
@@ -56,7 +49,6 @@ class Cbrt:
     sdq = 1
     cunt_id = 0
     def __init__(self, sdp, sdq):
-        Cbrt.cunt_id += 1
         self.__cbrt_id = Cbrt.cunt_id
         self.__sdp = sdp
         self.__sdq = sdq
@@ -72,13 +64,18 @@ class Cbrt:
         self.__sdp = sdp
     def set_sdq(self,sdq):
         self.__sdq = sdq
+    def decqtyb(self):
+        Cbrt.cunt_id = 0
+        self.__cbrt_id = Cbrt.cunt_id
+    def incqtyb(self):
+        Cbrt.cunt_id += 1
+        self.__cbrt_id = Cbrt.cunt_id
 
 class Ccrt:
     qep = 37
     qeq = 1
     csnt_id = 0
     def __init__(self, qep, qeq):
-        Ccrt.csnt_id += 1
         self.__ccrt_id = Ccrt.csnt_id
         self.__qep = qep
         self.__qeq = qeq
@@ -94,12 +91,17 @@ class Ccrt:
         self.__qep = qep
     def set_qeq(self,qeq):
         self.__qeq = qeq
+    def decqtyc(self):
+        Ccrt.csnt_id = 0
+        self.__ccrt_id = Ccrt.csnt_id
+    def incqtyc(self):
+        Ccrt.csnt_id += 1
+        self.__ccrt_id = Ccrt.csnt_id
 class Cdrt:
     bdp = 7.4
     bdq = 1
     cznt_id = 0
     def __init__(self, bdp, bdq):
-        Cdrt.cznt_id += 1
         self.__cdrt_id = Cdrt.cznt_id
         self.__bdp = bdp
         self.__bdq = bdq
@@ -115,6 +117,12 @@ class Cdrt:
         self.__bdp = bdp
     def set_bdq(self,bdq):
         self.__bdq = bdq
+    def decqtyd(self):
+        Cdrt.cznt_id = 0
+        self.__cdrt_id = Cdrt.cznt_id
+    def incqtyd(self):
+        Cdrt.cznt_id += 1
+        self.__cdrt_id = Cdrt.cznt_id
 
 class Roytut:
     p1 = {'code':1, 'name': 'Extravagant Slumber', 'image':'/static/ess.png', 'price':18.50}
