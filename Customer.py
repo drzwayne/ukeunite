@@ -20,7 +20,7 @@ class Cart:
     count_id = 0
     button1 = 0
     def __init__(self, esp, esq):
-        Cart.count_id += 1
+        #Cart.count_id += 1
         self.__cart_id = Cart.count_id
         self.__esp = esp
         self.__esq = esq
@@ -38,8 +38,12 @@ class Cart:
         self.__esp = esp
     def set_esq(self,esq):
         self.__esq = esq
-    def decrease(self):
-        Cart.count_id -= 1
+    def decqty(self):
+        Cart.count_id = 0
+        self.__cart_id = Cart.count_id
+    def incqty(self):
+        Cart.count_id += 1
+        self.__cart_id = Cart.count_id
 class Mart(Cart):
     def __init__(self,esp, esq):
         super().__init__(esp, esq)

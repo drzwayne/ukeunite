@@ -3,6 +3,7 @@ from Forms import CreateUserForm, CreateCustomerForm, CreateLaylaForm, CreateAya
 import shelve, User, Customer, log, Cart
 import jyserver.Flask as jsf
 import math
+import os
 import ctypes
 app = Flask(__name__)
 app.secret_key = 'yippee'
@@ -334,6 +335,10 @@ def cartpage():
             user = users_dict.get(key)
             users_list.append(user)
         print('user success')
+        #carts_dict = {}
+        #db = shelve.open('cart.db', 'r')
+        #carts_dict = db['Carts']
+        #db.close()
         total_dict = {}
         db = shelve.open('total.db','r')
         total_dict = db['Total']
@@ -378,6 +383,7 @@ def layla():
         except:
             print("Error in retrieving Carts from cart.db.")
         cart = Customer.Cart(create_l_form.esp, create_l_form.esq)
+        cart.incqty()
         carts_dict[cart.get_cart_id()] = cart
         db['Carts'] = carts_dict
         db.close()
@@ -411,19 +417,32 @@ def layla():
                 total_list.append(total)
                 print('es:',total)
             print('es:',math.fsum(total_list))
-            return render_template('menu.html', carts_list=carts_list,total_list=total_list)
+            return render_template('menu.html', carts_list=carts_list, total_list=total_list)
         elif request.form.get('clr1') == 'Remove ES':
+            os.remove('cart.db.bak')
+            os.remove('cart.db.dat')
+            os.remove('cart.db.dir')
             carts_dict = {}
-            db = shelve.open('cart.db', 'w')
-            carts_dict = db['Carts']
-            carts_dict[cart.decrease()] = cart
+            db = shelve.open('cart.db', 'c')
+            try:
+                carts_dict = db['Carts']
+            except:
+                print("Error in retrieving Carts from cart.db.")
+            cart = Customer.Cart(create_l_form.esp, create_l_form.esq)
+            cart.decqty()
+            carts_dict[cart.get_cart_id()] = cart
             db['Carts'] = carts_dict
+            db.close()
+            carts_dict = {}
+            db = shelve.open('cart.db', 'r')
+            carts_dict = db['Carts']
+            db.close()
             carts_list = []
             for key in carts_dict:
                 cart = carts_dict.get(key)
                 if len(carts_list) > 0:
-                    carts_list.remove(cart[0])
-            db.close()
+                    carts_list.pop(0)
+                carts_list.insert(0, cart)
             print('clear layla')
             return render_template('menu.html', carts_list=carts_list)
     return render_template('menu.html', form=create_l_form)
