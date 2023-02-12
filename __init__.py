@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from Forms import CreateUserForm, CreateCustomerForm, CreateLaylaForm, CreateAyatoForm, CreateBeidouForm, CreateXiaoForm
 import shelve, User, Customer, log, Cart
 import jyserver.Flask as jsf
+import math
 import ctypes
 app = Flask(__name__)
 app.secret_key = 'yippee'
@@ -167,7 +168,38 @@ def paymentpage():
             cdrts_list.pop(0)
         cdrts_list.insert(0, cdrt)
     print('fail')
-    return render_template('payment.html', carts_list=carts_list, cbrts_list=cbrts_list, ccrts_list=ccrts_list, cdrts_list=cdrts_list)
+    total_dict = {}
+    db = shelve.open('total.db','r')
+    total_dict = db['Total']
+    total_list = []
+    for key in total_dict:
+        total = total_dict.get(key)
+        total_list.append(total)
+    t2_dict = {}
+    db = shelve.open('two.db','r')
+    t2_dict = db['Two']
+    t2_list = []
+    for key in t2_dict:
+        t2 = t2_dict.get(key)
+        t2_list.append(t2)
+    t3_dict = {}
+    db = shelve.open('tree.db','r')
+    t3_dict = db['Tree']
+    t3_list = []
+    for key in t3_dict:
+        t3 = t3_dict.get(key)
+        t3_list.append(t3)
+    t4_dict = {}
+    db = shelve.open('four.db','r')
+    t4_dict = db['Four']
+    t4_list = []
+    for key in t4_dict:
+        t4 = t4_dict.get(key)
+        t4_list.append(t4)
+    st = (math.fsum(total_list)+math.fsum(t2_list)+math.fsum(t3_list)+math.fsum(t4_list))
+    subtotal_list = []
+    subtotal_list.append(st)
+    return render_template('payment.html', carts_list=carts_list, cbrts_list=cbrts_list, ccrts_list=ccrts_list, cdrts_list=cdrts_list, total_list=total_list, t2_list=t2_list, t3_list=t3_list, t4_list=t4_list, subtotal_list=subtotal_list)
 
 @app.before_request
 def bfr_rq():
@@ -302,7 +334,38 @@ def cartpage():
             user = users_dict.get(key)
             users_list.append(user)
         print('user success')
-        return render_template('cart.html', carts_list=carts_list, cbrts_list=cbrts_list, ccrts_list=ccrts_list, cdrts_list=cdrts_list, users_list=users_list)
+        total_dict = {}
+        db = shelve.open('total.db','r')
+        total_dict = db['Total']
+        total_list = []
+        for key in total_dict:
+            total = total_dict.get(key)
+            total_list.append(total)
+        t2_dict = {}
+        db = shelve.open('two.db','r')
+        t2_dict = db['Two']
+        t2_list = []
+        for key in t2_dict:
+            t2 = t2_dict.get(key)
+            t2_list.append(t2)
+        t3_dict = {}
+        db = shelve.open('tree.db','r')
+        t3_dict = db['Tree']
+        t3_list = []
+        for key in t3_dict:
+            t3 = t3_dict.get(key)
+            t3_list.append(t3)
+        t4_dict = {}
+        db = shelve.open('four.db','r')
+        t4_dict = db['Four']
+        t4_list = []
+        for key in t4_dict:
+            t4 = t4_dict.get(key)
+            t4_list.append(t4)
+        st = (math.fsum(total_list)+math.fsum(t2_list)+math.fsum(t3_list)+math.fsum(t4_list))
+        subtotal_list = []
+        subtotal_list.append(st)
+        return render_template('cart.html', carts_list=carts_list, cbrts_list=cbrts_list, ccrts_list=ccrts_list, cdrts_list=cdrts_list, users_list=users_list, total_list=total_list, t2_list=t2_list, t3_list=t3_list, t4_list=t4_list, subtotal_list=subtotal_list)
 
 @app.route('/extraSlum', methods=['GET', 'POST'])
 def layla():
@@ -318,6 +381,15 @@ def layla():
         carts_dict[cart.get_cart_id()] = cart
         db['Carts'] = carts_dict
         db.close()
+        total_dict = {}
+        db = shelve.open('total.db', 'c')
+        try:
+            total_dict = db['Total']
+        except:
+            print("Error in retrieving Total from total.db.")
+        total_dict = {'p1': 18.5 * cart.get_cart_id()}
+        db['Total'] = total_dict
+        db.close()
         if request.form.get('act1') == 'Add ES':
             carts_dict = {}
             db = shelve.open('cart.db', 'r')
@@ -330,7 +402,16 @@ def layla():
                     carts_list.pop(0)
                 carts_list.insert(0, cart)
             print('layla')
-            return render_template('menu.html', carts_list=carts_list)
+            total_dict = {}
+            db = shelve.open('total.db','r')
+            total_dict = db['Total']
+            total_list = []
+            for key in total_dict:
+                total = total_dict.get(key)
+                total_list.append(total)
+                print('es:',total)
+            print('es:',math.fsum(total_list))
+            return render_template('menu.html', carts_list=carts_list,total_list=total_list)
         elif request.form.get('clr1') == 'Remove ES':
             carts_dict = {}
             db = shelve.open('cart.db', 'w')
@@ -362,6 +443,15 @@ def xiao():
         cbrts_dict[cbrt.get_cbrt_id()] = cbrt
         db['Cbrts'] = cbrts_dict
         db.close()
+        t2_dict = {}
+        db = shelve.open('two.db', 'c')
+        try:
+            t2_dict = db['Two']
+        except:
+            print("Error in retrieving T2 from two.db.")
+        t2_dict = {'p2':11.5 * cbrt.get_cbrt_id()}
+        db['Two'] = t2_dict
+        db.close()
         if request.form.get('sd') == 'Add SD':
             cbrts_dict = {}
             db = shelve.open('cbrt.db', 'r')
@@ -374,7 +464,14 @@ def xiao():
                     cbrts_list.pop(0)
                 cbrts_list.insert(0, cbrt)
             print('xiao')
-            return render_template('menu.html', cbrts_list=cbrts_list)
+            t2_dict = {}
+            db = shelve.open('two.db','r')
+            t2_dict = db['Two']
+            t2_list = []
+            for key in t2_dict:
+                t2 = t2_dict.get(key)
+                t2_list.append(t2)
+            return render_template('menu.html', cbrts_list=cbrts_list, t2_list=t2_list)
     return render_template('menu.html', form=create_x_form)
 
 @app.route('/kamisatoClan', methods=['GET', 'POST'])
@@ -391,6 +488,15 @@ def ayato():
         ccrts_dict[ccrt.get_ccrt_id()] = ccrt
         db['Ccrts'] = ccrts_dict
         db.close()
+        t3_dict = {}
+        db = shelve.open('tree.db', 'c')
+        try:
+            t3_dict = db['Tree']
+        except:
+            print("Error in retrieving T3 from tree.db.")
+        t3_dict = {'p3':37 * ccrt.get_ccrt_id()}
+        db['Tree'] = t3_dict
+        db.close()
         if request.form.get('qe') == 'Add QE':
             ccrts_dict = {}
             db = shelve.open('ccrt.db', 'r')
@@ -403,7 +509,14 @@ def ayato():
                     ccrts_list.pop(0)
                 ccrts_list.insert(0, ccrt)
             print('ayato')
-            return render_template('menu.html', ccrts_list=ccrts_list)
+            t3_dict = {}
+            db = shelve.open('tree.db','r')
+            t3_dict = db['Tree']
+            t3_list = []
+            for key in t3_dict:
+                t3 = t3_dict.get(key)
+                t3_list.append(t3)
+            return render_template('menu.html', ccrts_list=ccrts_list, t3_list=t3_list)
     return render_template('menu.html', form=create_a_form)
 
 
@@ -421,6 +534,15 @@ def beidou():
         cdrts_dict[cdrt.get_cdrt_id()] = cdrt
         db['Cdrts'] = cdrts_dict
         db.close()
+        t4_dict = {}
+        db = shelve.open('four.db', 'c')
+        try:
+            t4_dict = db['Four']
+        except:
+            print("Error in retrieving T4 from four.db.")
+        t4_dict = {'p4':7.4 * cdrt.get_cdrt_id()}
+        db['Four'] = t4_dict
+        db.close()
         if request.form.get('bd') == 'Add BD':
             cdrts_dict = {}
             db = shelve.open('cdrt.db', 'r')
@@ -433,7 +555,14 @@ def beidou():
                     cdrts_list.pop(0)
                 cdrts_list.insert(0, cdrt)
             print('i love beidou :>')
-            return render_template('menu.html', cdrts_list=cdrts_list)
+            t4_dict = {}
+            db = shelve.open('four.db','r')
+            t4_dict = db['Four']
+            t4_list = []
+            for key in t4_dict:
+                t4 = t4_dict.get(key)
+                t4_list.append(t4)
+            return render_template('menu.html', cdrts_list=cdrts_list, t4_list=t4_list)
     return render_template('menu.html', form=create_b_form)
 @app.route('/menu',methods=['GET','POST'])
 def menupage():

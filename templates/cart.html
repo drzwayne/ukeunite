@@ -138,9 +138,9 @@
                 <td colspan="3">{{ user.get_credit_number() }}</td>
             </tr>
             {% endfor %}
-            <tr><td colspan="2">Subtotal</td>
-                {% for subt in sub_list %}
-                    <td colspan="3">$ {{ subtotal.get_subtotalcount() }} </td>
+            <tr><td colspan="2" style="font-weight:bold">Subtotal: </td>
+                {% for subtotal in subtotal_list %}
+                    <td colspan="3">$ {{ subtotal }} </td>
                 {% endfor %}
             </tr>
             <tr><td colspan="5" style="margin: 0 auto"><a href="/payment" class="btn btn-info" style="width: 500px">Pay</a></td></tr>

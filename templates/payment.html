@@ -30,10 +30,10 @@
         <img src="{{ url_for('static',filename='ho.png') }}" style="height:220px; width:392px"> <br>
         <a href="/menu" class="btn btn-dark" style="margin-top:10px">Back to Menu</a>
     </div>
-    <table class="table table-striped" style="width:500px; border:3px solid black; text-align:center">
+    <table class="table table-striped" style="width:500px; border:3px solid black">
         <thead>
             <tr>
-                  <th colspan="4">Receipt</th>
+                  <th colspan="4" style="text-align:center">Receipt</th>
             </tr>
         </thead>
         <tbody>
@@ -69,6 +69,11 @@
                   <td>$ {{ cdrt.get_cdrt_id() * cdrt.get_bdp() }} </td>
               {% endfor %}
           </tr>
+            <tr><td colspan="2" style="font-weight:bold">Subtotal: </td>
+                {% for subtotal in subtotal_list %}
+                    <td colspan="2">$ {{ subtotal }} </td>
+                {% endfor %}
+            </tr>
         </tbody>
     </table>
 </div>
